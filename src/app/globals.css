@@ -1,26 +1,76 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  /* colors */
+  --color-negative: #e04f3f;
+  --color-negative-gradient: linear-gradient(90deg, #ff6958 50%, #e04f3f 100%);
+  --color-focus: #ff6200;
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-positive: #2d9cdb;
+  --color-positive-gradient: linear-gradient(90deg, #67c8ff 50%, #2d9cdb 100%);
+  --color-overlay: #121619;
+  --color-primary-100: #ff7d29;
+  --color-primary-60: #ff9a53;
+  --color-primary-30: #ffd282;
+  --color-primary-gradient-100-60: linear-gradient(
+    90deg,
+    #ff9a53 50%,
+    #ff7d29 100%
+  );
+  --color-primary-gradient-60-30: linear-gradient(
+    90deg,
+    #ffd282 50%,
+    #ff9a53 100%
+  );
+  --color-secondary-100: #fb9e3a;
+  --color-secondary-60: #fdb85f;
+  --color-secondary-30: #ffe0b4;
+  --color-tertiary-100: #ffde4d;
+  --color-tertiary-60: #ffe97f;
+  --color-tertiary-30: #fff6c2;
+  --color-gray-100: #2c2c2c;
+  --color-gray-80: #4f4f4f;
+  --color-gray-60: #7a7a7a;
+  --color-gray-40: #bdbdbd;
+  --color-gray-20: #ededed;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* font size */
+  --text-heading-2xl: 24px;
+  --text-heading-2xl--line-height: 1.33;
+  --text-heading-2xl--font-weight: 700;
+  --text-heading-2xl--letter-spacing: 0px;
+  --text-heading-xl: 20px;
+  --text-heading-xl--line-height: 1.4;
+  --text-heading-xl--font-weight: 700;
+  --text-heading-xl--letter-spacing: 0px;
+  --text-heading-lg: 18px;
+  --text-heading-lg--line-height: 1.44;
+  --text-heading-lg--font-weight: 500;
+  --text-heading-lg--letter-spacing: 0px;
+  --text-body-md: 16px;
+  --text-body-md--line-height: 1.5;
+  --text-body-md--font-weight: 400;
+  --text-body-md--letter-spacing: 0px;
+  --text-body-sm: 14px;
+  --text-body-sm--line-height: 1.57;
+  --text-body-sm--font-weight: 400;
+  --text-body-sm--letter-spacing: 0px;
+  --text-button-md: 16px;
+  --text-button-md--line-height: 1.5;
+  --text-button-md--font-weight: 500;
+  --text-button-md--letter-spacing: 0px;
+  --text-caption-xs: 12px;
+  --text-caption-xs--line-height: 1.5;
+  --text-caption-xs--font-weight: 400;
+  --text-caption-xs--letter-spacing: 0px;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
