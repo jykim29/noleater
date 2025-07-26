@@ -3,26 +3,14 @@
 @theme {
   /* colors */
   --color-negative: #e04f3f;
-  --color-negative-gradient: linear-gradient(90deg, #ff6958 50%, #e04f3f 100%);
   --color-focus: #ff6200;
   --color-white: #ffffff;
   --color-black: #000000;
   --color-positive: #2d9cdb;
-  --color-positive-gradient: linear-gradient(90deg, #67c8ff 50%, #2d9cdb 100%);
   --color-overlay: #121619;
   --color-primary-100: #ff7d29;
   --color-primary-60: #ff9a53;
   --color-primary-30: #ffd282;
-  --color-primary-gradient-100-60: linear-gradient(
-    90deg,
-    #ff9a53 50%,
-    #ff7d29 100%
-  );
-  --color-primary-gradient-60-30: linear-gradient(
-    90deg,
-    #ffd282 50%,
-    #ff9a53 100%
-  );
   --color-secondary-100: #fb9e3a;
   --color-secondary-60: #fdb85f;
   --color-secondary-30: #ffe0b4;
@@ -66,6 +54,15 @@
   --text-caption-xs--letter-spacing: 0px;
 }
 
+@layer base {
+  /* TailwindCSS v4에서 제거된 button에 cursor:pointer 속성 되살리기 */
+  /* 본래 CSS가 추구하는 cursor: pointer인 경우는 링크인 경우라고 한다. */
+  button:not([disabled]),
+  [role='button']:not([disabled]) {
+    cursor: pointer;
+  }
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
   }
@@ -73,4 +70,5 @@
 
 body {
   font-family: Arial, Helvetica, sans-serif;
+  @apply text-body-md;
 }
