@@ -25,7 +25,7 @@ export default function NavBar() {
         <Image
           width={36}
           height={36}
-          src="/assets//images/user_circle.png"
+          src="/assets/images/user_circle.png"
           alt="내 프로필"
         />
         <span className="text-caption-xs">내 프로필</span>
@@ -36,7 +36,7 @@ export default function NavBar() {
       >
         <Image
           className="object-contain"
-          src="/assets//images/foods_playground.png"
+          src="/assets/images/foods_playground.png"
           fill
           priority={true}
           alt="메뉴 펼치기"
