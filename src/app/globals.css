@@ -72,3 +72,8 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   @apply text-body-md;
 }
+
+*:focus,
+*:focus-within {
+  outline-color: var(--color-focus);
+}
