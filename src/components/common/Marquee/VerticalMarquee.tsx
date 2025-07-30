@@ -30,7 +30,6 @@ function VerticalMarquee({
     const timer: NodeJS.Timeout = setInterval(() => {
       countRef.current += 1;
       if (countRef.current >= totalCount) countRef.current = 0;
-      console.log(`${countRef.current} / ${totalCount}`);
       containerEl.style.translate = `0% ${direction === 'upward' ? '-' : ''}${(100 / totalCount) * countRef.current}%`;
     }, duration);
 
@@ -38,7 +37,7 @@ function VerticalMarquee({
       console.log('cleanup');
       clearInterval(timer);
     };
-  }, [containerRef, duration]);
+  }, [containerRef, duration, direction]);
 
   return (
     <div

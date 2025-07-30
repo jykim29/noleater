@@ -8,7 +8,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 }
 
 export default function TextInput({
-  label = '',
+  label,
   id,
   name,
   className: newClassName = '',
