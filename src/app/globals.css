@@ -73,7 +73,18 @@ body {
   @apply text-body-md;
 }
 
-*:focus,
-*:focus-within {
-  outline-color: var(--color-focus);
+@media (hover: hover) and (pointer: fine) {
+  *:focus,
+  *:focus-within {
+    outline-color: var(--color-focus);
+  }
+}
+
+a[href]:active,
+input:not([disabled]):active,
+select:not([disabled]):active,
+textarea:not([disabled]):active,
+button:not([disabled]):active,
+[tabindex]:not([tabindex='-1']):active {
+  filter: brightness(0.9);
 }

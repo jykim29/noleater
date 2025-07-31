@@ -21,7 +21,7 @@ export default function QuickLink({
   return (
     <Link
       className={twMerge(
-        'bg-secondary-30 border-primary-30 flex items-center justify-center gap-1 rounded-xl border-2 px-2 py-2 pointer-fine:hover:brightness-105',
+        'bg-secondary-30 border-primary-30 relative flex h-full items-center justify-center gap-1 rounded-xl border-2 px-2 py-2 pointer-fine:hover:brightness-105',
         newClassName
       )}
       href={to}

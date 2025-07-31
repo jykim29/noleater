@@ -3,3 +3,7 @@ export { default as PasswordInput } from './PasswordInput';
 export { default as Textarea } from './Textarea';
 export { default as Checkbox } from './Checkbox';
 export { default as RadioButton } from './RadioButton';
+export { default as Button } from './Button';
+export { default as NavLink } from './NavLink';
+export { default as VerticalMarquee } from './VerticalMarquee';
+export { default as MarqueeItem } from './MarqueeItem';

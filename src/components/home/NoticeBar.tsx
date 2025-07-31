@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import VerticalMarquee from '@/components/common/Marquee/VerticalMarquee';
+import { VerticalMarquee } from '../common';
 import mockData from '@/data/notice.json';
 
 export default function NoticeBar() {

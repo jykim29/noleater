@@ -11,7 +11,7 @@ export default function RadioButton({
 }: RadioButtonProps) {
   return (
     <label
-      className="has-focus-within:outline-focus inline-flex items-center gap-1 has-focus-within:outline-2"
+      className="pointer-fine:has-focus-within:outline-focus inline-flex items-center gap-1 pointer-fine:has-focus-within:outline-2"
       htmlFor={id}
     >
       <input

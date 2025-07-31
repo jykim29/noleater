@@ -6,7 +6,7 @@ import { EmblaCarouselType, EmblaOptionsType } from 'embla-carousel';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay, { AutoplayOptionsType } from 'embla-carousel-autoplay';
 import { twMerge } from 'tailwind-merge';
-import '@/components/Carousel/Carousel.css';
+import '@/components/home/Carousel.css';
 
 interface CarouselProps {
   options?: EmblaOptionsType;
