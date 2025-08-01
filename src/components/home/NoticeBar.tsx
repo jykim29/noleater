@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { VerticalMarquee } from '../common';
-import mockData from '@/data/notice.json';
+import mockData from '@/data/home/notice.json';
 
 export default function NoticeBar() {
   return (

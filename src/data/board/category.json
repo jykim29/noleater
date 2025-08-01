@@ -1,0 +1,21 @@
+{
+  "data": [
+    {
+      "id": "all",
+      "label": "🌎 모든 주제"
+    },
+    {
+      "id": "talk",
+      "label": "💬 자유 수다"
+    },
+    {
+      "id": "health",
+      "label": "💊 건강 상식"
+    },
+    {
+      "id": "issue",
+      "label": "🔥 이슈&트렌드"
+    }
+  ],
+  "status": "success"
+}

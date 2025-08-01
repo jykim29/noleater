@@ -1,0 +1,224 @@
+{
+  "data": [
+    {
+      "id": 19,
+      "category": "자유수다",
+      "author": { "name": "시냇물" },
+      "title": "시간 관리의 기술",
+      "images": [{ "src": "https://picsum.photos/200/200" }],
+      "views": 91,
+      "comments": 4,
+      "href": "/board/0",
+      "createdAt": "2025-08-01T11:00:00"
+    },
+    {
+      "id": 18,
+      "category": "이슈&트렌드",
+      "author": { "name": "꿀벌요정" },
+      "title": "AI와 나의 하루",
+      "images": [{ "src": "https://picsum.photos/200/200" }],
+      "views": 334,
+      "comments": 19,
+      "href": "/board/0",
+      "createdAt": "2025-07-31T22:45:00"
+    },
+    {
+      "id": 17,
+      "category": "자유수다",
+      "author": { "name": "웃음전파자" },
+      "title": "스타트업 성장 이야기",
+      "images": [{ "src": "https://picsum.photos/200/200" }],
+      "views": 401,
+      "comments": 27,
+      "href": "/board/0",
+      "createdAt": "2025-07-30T09:10:00"
+    },
+    {
+      "id": 16,
+      "category": "이슈&트렌드",
+      "author": { "name": "꿈꾸는별" },
+      "title": "포트폴리오 준비하기",
+      "images": [{ "src": "https://picsum.photos/200/200" }],
+      "views": 56,
+      "comments": 1,
+      "href": "/board/0",
+      "createdAt": "2025-07-29T20:00:00"
+    },
+    {
+      "id": 15,
+      "category": "자유수다",
+      "author": { "name": "하늘수리" },
+      "title": "모던 CSS 기법",
+      "images": [{ "src": "https://picsum.photos/200/200" }],
+      "views": 269,
+      "comments": 15,
+      "href": "/board/0",
+      "createdAt": "2025-07-28T07:30:00"
+    },
+    {
+      "id": 14,
+      "category": "이슈&트렌드",
+      "author": { "name": "노을여행자" },
+      "title": "게임 개발 일기",
+      "images": [{ "src": "https://picsum.photos/200/200" }],
+      "views": 187,
+      "comments": 9,
+      "href": "/board/0",
+      "createdAt": "2025-07-26T18:15:00"
+    },
+    {
+      "id": 13,
+      "category": "자유수다",
+      "author": { "name": "수박소년" },
+      "title": "원격 근무 팁",
+      "images": [{ "src": "https://picsum.photos/200/200" }],
+      "views": 312,
+      "comments": 21,
+      "href": "/board/0",
+      "createdAt": "2025-07-25T05:05:00"
+    },
+    {
+      "id": 12,
+      "category": "이슈&트렌드",
+      "author": { "name": "책읽는곰" },
+      "title": "자기계발의 함정",
+      "images": [{ "src": "https://picsum.photos/200/200" }],
+      "views": 98,
+      "comments": 6,
+      "href": "/board/0",
+      "createdAt": "2025-07-23T16:40:00"
+    },
+    {
+      "id": 11,
+      "category": "자유수다",
+      "author": { "name": "커피중독자" },
+      "title": "데이터 시각화 트렌드",
+      "images": [{ "src": "https://picsum.photos/200/200" }],
+      "views": 215,
+      "comments": 14,
+      "href": "/board/0",
+      "createdAt": "2025-07-22T02:25:00"
+    },
+    {
+      "id": 10,
+      "category": "건강상식",
+      "author": { "name": "햇살도둑" },
+      "title": "오픈소스 기여 방법",
+      "images": [{ "src": "https://picsum.photos/200/200" }],
+      "views": 498,
+      "comments": 33,
+      "href": "/board/0",
+      "createdAt": "2025-07-20T14:10:00"
+    },
+    {
+      "id": 9,
+      "category": "자유수다",
+      "author": { "name": "바람의기사" },
+      "title": "디자이너와 개발자의 협업",
+      "images": [{ "src": "https://picsum.photos/200/200" }],
+      "views": 76,
+      "comments": 2,
+      "href": "/board/0",
+      "createdAt": "2025-07-18T23:50:00"
+    },
+    {
+      "id": 8,
+      "category": "건강상식",
+      "author": { "name": "잠꾸러기" },
+      "title": "간단한 요리 레시피",
+      "images": [{ "src": "https://picsum.photos/200/200" }],
+      "views": 204,
+      "comments": 9,
+      "href": "/board/0",
+      "createdAt": "2025-07-17T13:20:00"
+    },
+    {
+      "id": 7,
+      "category": "자유수다",
+      "author": { "name": "무지개전사" },
+      "title": "새로운 취미 시작하기",
+      "images": [{ "src": "https://picsum.photos/200/200" }],
+      "views": 129,
+      "comments": 4,
+      "href": "/board/0",
+      "createdAt": "2025-07-15T23:05:00"
+    },
+    {
+      "id": 6,
+      "category": "자유수다",
+      "author": { "name": "배고픈고양이" },
+      "title": "리액트 최적화 전략",
+      "images": [{ "src": "https://picsum.photos/200/200" }],
+      "views": 350,
+      "comments": 18,
+      "href": "/board/0",
+      "createdAt": "2025-07-14T12:45:00"
+    },
+    {
+      "id": 5,
+      "category": "건강상식",
+      "author": { "name": "버그헌터" },
+      "title": "책 추천: 2025 필독서",
+      "images": [{ "src": "https://picsum.photos/200/200" }],
+      "views": 267,
+      "comments": 11,
+      "href": "/board/0",
+      "createdAt": "2025-07-12T22:15:00"
+    },
+    {
+      "id": 4,
+      "category": "자유수다",
+      "author": { "name": "달님소녀" },
+      "title": "나만의 생산성 루틴",
+      "images": [{ "src": "https://picsum.photos/200/200" }],
+      "views": 83,
+      "comments": 5,
+      "href": "/board/0",
+      "createdAt": "2025-07-11T10:00:00"
+    },
+    {
+      "id": 3,
+      "category": "자유수다",
+      "author": { "name": "코딩마법사" },
+      "title": "자바스크립트 팁 모음",
+      "images": [{ "src": "https://picsum.photos/200/200" }],
+      "views": 412,
+      "comments": 29,
+      "href": "/board/0",
+      "createdAt": "2025-07-09T21:30:00"
+    },
+    {
+      "id": 2,
+      "category": "건강상식",
+      "author": { "name": "별빛나그네" },
+      "title": "여름 휴가 계획",
+      "images": [{ "src": "https://picsum.photos/200/200" }],
+      "views": 57,
+      "comments": 3,
+      "href": "/board/0",
+      "createdAt": "2025-07-08T09:00:00"
+    },
+    {
+      "id": 1,
+      "category": "이슈&트렌드",
+      "author": { "name": "초코칩군" },
+      "title": "맛집 탐방기",
+      "images": [{ "src": "https://picsum.photos/200/200" }],
+      "views": 298,
+      "comments": 12,
+      "href": "/board/0",
+      "createdAt": "2025-07-06T20:30:00"
+    },
+    {
+      "id": 0,
+      "category": "자유수다",
+      "author": { "name": "까망토끼" },
+      "title": "오늘의 개발 일지",
+      "images": [{ "src": "https://picsum.photos/200/200" }],
+      "views": 143,
+      "comments": 7,
+      "href": "/board/0",
+      "createdAt": "2025-07-05T08:00:00"
+    }
+  ]
+}
