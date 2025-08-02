@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import IconWithCount from '../shared/IconWithCount';
+import IconWithCount from '@/components/shared/IconWithCount';
 import formatRelativeTime from '@/utils/formatRelativeTime';
 
 interface PostCardItemProps {

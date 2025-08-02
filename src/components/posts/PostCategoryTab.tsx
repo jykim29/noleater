@@ -7,7 +7,7 @@ interface BoardCategoryTabProps {
   tabData: { id: string; label: string }[];
 }
 
-export default function BoardCategoryTab({ tabData }: BoardCategoryTabProps) {
+export default function PostCategoryTab({ tabData }: BoardCategoryTabProps) {
   const variants = {
     common:
       'text-caption-xs! rounded-full border bg-linear-0 px-2 py-1.5 text-black',
