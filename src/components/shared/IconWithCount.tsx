@@ -7,7 +7,7 @@ interface IconWithCountProps extends React.PropsWithChildren {
 export default function IconWithCount({ icon, children }: IconWithCountProps) {
   return (
     <div className="flex items-center gap-1">
-      <div className="relative h-6 w-6">
+      <div className="relative h-4 w-4">
         <Image className="object-contain" src={icon.src} fill alt={icon.alt} />
       </div>
       {children}
