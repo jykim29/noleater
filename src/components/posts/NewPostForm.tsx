@@ -1,10 +1,30 @@
 'use client';
 
+import PostCategoryRadio from './PostCategoryRadio';
 import { Button, FileInput, Textarea, TextInput } from '../common';
 import AttachedImagePreviewBox from './AttachedImagePreviewBox';
-import PostCategoryRadio from './PostCategoryRadio';
+import useAttachFiles from '@/hooks/useAttachFiles';
 
 export default function NewPostForm() {
+  const { fileList, addFile, removeFile } = useAttachFiles({
+    maxFileCount: 1,
+    maxSize: 5_242_880,
+    strictFileType: ['jpeg', 'png'],
+  });
+
+  const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.currentTarget.files) return;
+    const file = e.currentTarget.files[0];
+    const { result, message } = addFile(file);
+    if (result !== 'success') return alert(message);
+    return;
+  };
+  const handleDeleteFile = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const fileId = e.currentTarget.dataset.imageId;
+    if (!fileId) return;
+    removeFile(fileId);
+  };
+
   return (
     <form action="" className="flex flex-col gap-3">
       <fieldset className="flex items-center gap-1">
@@ -43,14 +63,21 @@ export default function NewPostForm() {
           <span className="text-negative">※ 최대 1장(5MB)까지 첨부가능</span>
         </legend>
         <div className="flex items-center gap-3 py-1">
-          <AttachedImagePreviewBox
-            image={{ src: 'https://picsum.photos/80/80' }}
-            onDelete={(e) => console.log('삭제버튼 클릭', e.currentTarget)}
-          />
+          {fileList.map((file) => (
+            <AttachedImagePreviewBox
+              key={file.id}
+              image={{ src: file.previewURL, id: file.id }}
+              onDelete={handleDeleteFile}
+            />
+          ))}
           <FileInput
             id="image"
             name="image"
-            onChange={(e) => console.log(e.currentTarget.files)}
+            onChange={(e) => {
+              handleChangeFile(e);
+              e.currentTarget.value = '';
+            }}
+            accept="image/*"
           />
         </div>
       </fieldset>
