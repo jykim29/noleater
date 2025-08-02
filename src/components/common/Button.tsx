@@ -1,6 +1,6 @@
 import { twMerge } from 'tailwind-merge';
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProps extends React.ComponentPropsWithoutRef<'button'> {
   type?: 'button' | 'submit' | 'reset';
   className?: string;
 }

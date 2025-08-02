@@ -1,4 +1,4 @@
-interface RadioButtonProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface RadioButtonProps extends React.ComponentPropsWithoutRef<'input'> {
   id: string;
   name: string;
 }

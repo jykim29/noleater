@@ -1,4 +1,4 @@
-interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface CheckboxProps extends React.ComponentPropsWithoutRef<'input'> {
   id: string;
   name: string;
 }

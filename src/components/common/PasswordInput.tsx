@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface InputProps extends React.ComponentPropsWithoutRef<'input'> {
   label?: string;
   id: string;
   name: string;
