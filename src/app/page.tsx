@@ -2,7 +2,7 @@ import { Button, NavLink, TextInput } from '@/components/common';
 import { Carousel, MainSection, NoticeBar, QuickLink } from '@/components/home';
 import { Content, Header } from '@/components/layout';
 
-import mockData from '@/data/banners.json';
+import mockData from '@/data/home/banners.json';
 
 export default async function Home() {
   return (
@@ -43,7 +43,7 @@ export default async function Home() {
             </QuickLink>
             <QuickLink
               className="w-full"
-              to="/"
+              to="/posts"
               image={{ src: '/assets/images/freeboard.png', alt: '자유게시판' }}
             >
               자유게시판

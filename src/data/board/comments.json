@@ -1,0 +1,34 @@
+{
+  "data": [
+    {
+      "profile": {
+        "id": "f603c3c7-22b7-4814-9390-11813f3c5a6e",
+        "imgSrc": "https://picsum.photos/80/80",
+        "username": "푸른바다"
+      },
+      "id": "1",
+      "content": "안녕하세요. 반갑습니다.",
+      "createdAt": "2025-07-21T21:24:31"
+    },
+    {
+      "profile": {
+        "id": "08890c6e-8564-40ca-bc14-01c1f08c8847",
+        "imgSrc": "https://picsum.photos/80/80",
+        "username": "치킨조아"
+      },
+      "id": "2",
+      "content": "안녕하세요. 반갑습니다.",
+      "createdAt": "2025-07-21T21:24:31"
+    },
+    {
+      "profile": {
+        "id": "f603c3c7-22b7-4814-9390-11813f3c5a6e",
+        "imgSrc": "https://picsum.photos/80/80",
+        "username": "푸른바다"
+      },
+      "id": "3",
+      "content": "안녕하세요. 반갑습니다.",
+      "createdAt": "2025-07-21T21:24:31"
+    }
+  ]
+}
