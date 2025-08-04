@@ -13,7 +13,6 @@ interface PostCardListProps {
     }[];
     views: number;
     comments: number;
-    href: string;
     createdAt: string;
   }[];
 }
