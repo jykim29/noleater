@@ -4,3 +4,6 @@ export { default as PostCardList } from './PostCardList';
 export { default as PostCategoryRadio } from './PostCategoryRadio';
 export { default as AttachedImagePreviewBox } from './AttachedImagePreviewBox';
 export { default as NewPostForm } from './NewPostForm';
+export { default as PostHeader } from './PostHeader';
+export { default as CommentItem } from './CommentItem';
+export { default as CommentList } from './CommentList';

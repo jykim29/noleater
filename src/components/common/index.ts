@@ -11,3 +11,5 @@ export { default as VerticalMarquee } from './VerticalMarquee';
 export { default as MarqueeItem } from './MarqueeItem';
 export { default as TabButton } from './TabButton';
 export { default as TabList } from './TabList';
+export { default as ProfileImage } from './ProfileImage';
+export { default as ProfileWithMetadata } from './ProfileWithMetadata';
