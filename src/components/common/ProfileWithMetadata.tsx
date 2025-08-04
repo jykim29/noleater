@@ -6,7 +6,7 @@ interface ProfileSetProps {
     imgSrc: string;
     username: string;
   };
-  metadata: {
+  metadata?: {
     views?: number;
     comments?: number;
     like?: number;
