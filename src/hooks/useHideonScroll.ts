@@ -26,6 +26,10 @@ export default function useHideOnScroll({
       }
     };
     window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, [threshold]);
 
   return isHidden;
