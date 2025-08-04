@@ -13,3 +13,5 @@ export { default as TabButton } from './TabButton';
 export { default as TabList } from './TabList';
 export { default as ProfileImage } from './ProfileImage';
 export { default as ProfileWithMetadata } from './ProfileWithMetadata';
+export { default as Carousel } from './Carousel';
+export { default as ExpandableParagraph } from './ExpandableParagraph';
