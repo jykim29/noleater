@@ -15,3 +15,7 @@ export { default as ProfileImage } from './ProfileImage';
 export { default as ProfileWithMetadata } from './ProfileWithMetadata';
 export { default as Carousel } from './Carousel';
 export { default as ExpandableParagraph } from './ExpandableParagraph';
+export { default as GridItem } from './GridItem';
+export { default as Portal } from './Portal';
+export { default as Overlay } from './Overlay';
+export { default as BottomSheet } from './BottomSheet';
