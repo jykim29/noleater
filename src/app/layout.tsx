@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Noto_Sans_KR } from 'next/font/google';
 import { Footer } from '@/components/layout';
+import { ModalContextProvider } from '@/contexts/ModalContext';
 import './globals.css';
 
 const notoSansKR = Noto_Sans_KR({
@@ -23,9 +24,10 @@ export default function RootLayout({
         className={`${notoSansKR.className} bg-gray-40 min-h-screen w-full antialiased`}
       >
         <div className="relative mx-auto min-h-screen w-full max-w-md min-w-xs bg-white">
-          {children}
+          <ModalContextProvider>{children}</ModalContextProvider>
           <Footer />
         </div>
+        <div id="modal"></div>
       </body>
     </html>
   );
