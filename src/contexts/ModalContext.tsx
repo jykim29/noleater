@@ -31,10 +31,10 @@ export function ModalContextProvider({
   const [isHidden, setIsHidden] = useState<boolean>(true);
   const [node, setNode] = useState<React.ReactNode | null>(null);
 
-  const openModal: ModalContextType['openModal'] = useCallback(() => {
+  const openModal: ModalContextType['openModal'] = useCallback((node) => {
     setNode(node);
     setIsHidden(false);
-  }, [node]);
+  }, []);
 
   const closeModal: ModalContextType['closeModal'] = useCallback(() => {
     setNode(null);
