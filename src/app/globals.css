@@ -7,7 +7,7 @@
   --color-white: #ffffff;
   --color-black: #000000;
   --color-positive: #2d9cdb;
-  --color-overlay: #121619;
+  --color-overlay: rgba(17, 21, 24, 0.5);
   --color-primary-100: #ff7d29;
   --color-primary-60: #ff9a53;
   --color-primary-30: #ffd282;
