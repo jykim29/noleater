@@ -1,12 +1,23 @@
+'use client';
+
+import { useCallback } from 'react';
+import { useModalContext } from '@/contexts/ModalContext';
 import { Button } from '../common';
 
-export default function KebabMenuButton({
-  ...rest
-}: React.ComponentPropsWithoutRef<'button'>) {
+interface KebabMenuButtonProps {
+  contextMenu: React.ReactNode;
+}
+
+export default function KebabMenuButton({ contextMenu }: KebabMenuButtonProps) {
+  const { openModal } = useModalContext();
+  const handleClick = useCallback(() => {
+    openModal(contextMenu);
+  }, [contextMenu, openModal]);
+
   return (
     <Button
       className="pointer-fine:hover:bg-gray-20 h-8 w-8 border-none bg-[url(/assets/icons/kebab_menu.svg)] bg-center bg-no-repeat p-0"
-      {...rest}
+      onClick={handleClick}
     >
       <span className="sr-only">더보기</span>
     </Button>
