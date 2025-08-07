@@ -32,11 +32,13 @@ export function ModalContextProvider({
   const [node, setNode] = useState<React.ReactNode | null>(null);
 
   const openModal: ModalContextType['openModal'] = useCallback((node) => {
+    document.body.style = 'overflow-y: hidden';
     setNode(node);
     setIsHidden(false);
   }, []);
 
   const closeModal: ModalContextType['closeModal'] = useCallback(() => {
+    document.body.removeAttribute('style');
     setNode(null);
     setIsHidden(true);
   }, []);
