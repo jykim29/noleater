@@ -17,6 +17,13 @@ export default function FeedGrid() {
               fill
               sizes="100vw"
             />
+            <Image
+              className="absolute top-2 right-2"
+              src="/assets/icons/multiple_image.svg"
+              alt="이미지 더있음"
+              width={21}
+              height={20}
+            />
           </Button>
         </GridItem>
       ))}
