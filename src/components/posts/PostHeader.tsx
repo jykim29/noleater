@@ -1,5 +1,5 @@
 import { ProfileWithMetadata } from '../common';
-import { FollowButton, KebabMenuButton } from '../shared';
+import { ContextMenu, FollowButton, KebabMenuButton } from '../shared';
 
 interface PostHeaderProps {
   profile: {
@@ -14,13 +14,18 @@ interface PostHeaderProps {
   };
 }
 
+// TODO
+// 1. 전체적으로 요소 크기가 너무 커서 줄여야 함
+
 export default function PostHeader({ profile, postMetadata }: PostHeaderProps) {
   return (
     <div className="flex items-center justify-between">
       <ProfileWithMetadata profile={profile} metadata={postMetadata} />
       <div className="flex items-center gap-1">
         <FollowButton isFollowed={profile.isFollowed} />
-        <KebabMenuButton />
+        <KebabMenuButton
+          contextMenu={<ContextMenu menus={['report', 'modify', 'delete']} />}
+        />
       </div>
     </div>
   );

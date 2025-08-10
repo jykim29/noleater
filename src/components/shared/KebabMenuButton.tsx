@@ -9,10 +9,10 @@ interface KebabMenuButtonProps {
 }
 
 export default function KebabMenuButton({ contextMenu }: KebabMenuButtonProps) {
-  const { openModal } = useModalContext();
+  const { open } = useModalContext();
   const handleClick = useCallback(() => {
-    openModal(contextMenu);
-  }, [contextMenu, openModal]);
+    open.bottomSheet(contextMenu);
+  }, [contextMenu, open]);
 
   return (
     <Button
