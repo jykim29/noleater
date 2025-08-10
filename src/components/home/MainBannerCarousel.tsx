@@ -4,6 +4,11 @@ import Image from 'next/image';
 import { Carousel } from '../common';
 import bannerMockData from '@/data/home/banners.json';
 
+/**
+ * Renders a carousel of banner images with autoplay and clickable dotted page indicators.
+ *
+ * Displays images sourced from mock banner data, automatically cycling through slides every 3 seconds. Users can navigate to a specific slide by clicking the corresponding dot indicator.
+ */
 export default function MainBannerCarousel() {
   return (
     <Carousel autoplayOptions={{ delay: 3000, stopOnInteraction: false }}>

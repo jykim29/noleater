@@ -14,6 +14,14 @@ const stateVariants = {
     '[&>button.active]:from-primary-100 [&>button.active]:to-secondary-60 [&>button.active]:border-secondary-60 [&>button.active]:text-white',
 };
 
+/**
+ * Renders a tab list for board categories, displaying each category as a tab.
+ *
+ * The first tab is statically set as active on initial render.
+ *
+ * @param tabData - Array of category objects, each with an `id` and `label`
+ * @returns A React element containing the category tab list
+ */
 export default function PostCategoryTab({ tabData }: BoardCategoryTabProps) {
   return (
     <TabList

@@ -32,6 +32,13 @@ export const useModalContext = () => {
   return context;
 };
 
+/**
+ * Provides modal state and control methods to its descendants via React context.
+ *
+ * Wraps children with a context that enables opening bottom sheet or center modals, closing all modals, and accessing modal visibility and content state. Also renders a modal container for displaying modal content.
+ *
+ * @param children - The React nodes that will have access to the modal context.
+ */
 export function ModalContextProvider({
   children,
 }: {

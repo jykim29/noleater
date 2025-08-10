@@ -11,6 +11,14 @@ interface FeedGridItemProps {
   isMultiple?: boolean;
 }
 
+/**
+ * Renders a grid item displaying an image with an optional overlay icon for multiple images, and opens a modal with the feed item when clicked.
+ *
+ * @param id - Identifier for the feed item to display in the modal
+ * @param imgSrc - Source URL of the image to display in the grid item
+ * @param isMultiple - If true, displays an overlay icon indicating multiple images (optional)
+ * @returns The rendered grid item component
+ */
 export default function FeedGridItem({
   id,
   imgSrc,

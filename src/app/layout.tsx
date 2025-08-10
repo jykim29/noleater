@@ -13,6 +13,13 @@ export const metadata: Metadata = {
   description: '잇터들을 위한 놀이터 놀잇터입니다.',
 };
 
+/**
+ * Defines the root layout for the application, applying global font, styles, and context providers.
+ *
+ * Wraps all page content with modal context, includes a footer, and sets up a portal root for modals.
+ *
+ * @param children - The content to be rendered within the layout
+ */
 export default function RootLayout({
   children,
 }: Readonly<{

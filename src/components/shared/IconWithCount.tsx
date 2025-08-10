@@ -13,6 +13,13 @@ const sizeVariant = {
   xl: 'w-10 h-10',
 };
 
+/**
+ * Displays an icon with a configurable size alongside optional child elements.
+ *
+ * Renders an image based on the provided `icon` prop and displays any children next to it in a horizontal layout.
+ *
+ * @param icon - Object containing the image source, alt text, and optional size variant for the icon.
+ */
 export default function IconWithCount({ icon, children }: IconWithCountProps) {
   return (
     <div className="flex items-center gap-1">

@@ -33,6 +33,14 @@ interface PageIndicatorProps {
   ) => void;
 }
 
+/**
+ * Provides a carousel container with optional autoplay and pagination, sharing carousel state via context to child components.
+ *
+ * Renders a loading placeholder until the carousel is initialized.
+ *
+ * @param options - Embla carousel configuration options
+ * @param autoplayOptions - Optional autoplay configuration for automatic slide transitions
+ */
 function Carousel({
   options,
   autoplayOptions,
@@ -63,6 +71,11 @@ function Carousel({
   );
 }
 
+/**
+ * Wraps carousel slides in a container div with Embla and additional custom classes.
+ *
+ * @param className - Additional class names to merge with the default Embla container class
+ */
 function Container({
   className: newClassName,
   children,
@@ -72,6 +85,11 @@ function Container({
   );
 }
 
+/**
+ * Renders a carousel slide container with appropriate styling.
+ *
+ * Wraps its children in a div with the `embla__slide` class and any additional classes provided.
+ */
 function Slide({
   className: newClassName = '',
   children,
@@ -88,6 +106,15 @@ const indicatorPositionVariants = {
   bottom: 'bottom-2',
 };
 
+/**
+ * Renders a slide indicator for the carousel, displaying either dots or a numeric label.
+ *
+ * Shows a series of dots or a numeric indicator representing the current slide and total slides. Dots can be positioned and made clickable to interact with the carousel if a click handler is provided. Renders nothing if there is only one slide.
+ *
+ * @param type - The indicator style, either 'dotted' or 'numeric'
+ * @param position - Optional object specifying horizontal (`x`) and vertical (`y`) position of the indicator
+ * @param onClick - Optional handler invoked when a dot is clicked, receiving the clicked element and carousel API
+ */
 function PageIndicator({
   type = 'dotted',
   position,

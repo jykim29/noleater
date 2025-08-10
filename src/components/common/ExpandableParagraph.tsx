@@ -7,6 +7,15 @@ interface ExpandableParagraphProps {
   children: string;
 }
 
+/**
+ * Displays a paragraph that can be expanded to show the full text or collapsed to show a truncated preview.
+ *
+ * If the provided text exceeds the specified character limit, only a shortened version is shown with an option to expand and reveal the entire content.
+ *
+ * @param charLimit - The maximum number of characters to display before truncation (defaults to 200)
+ * @param children - The text content to display in the paragraph
+ * @returns A React element rendering the expandable paragraph, or `null` if `children` is not a string
+ */
 export default function ExpandableParagraph({
   charLimit = 200,
   children,

@@ -7,6 +7,13 @@ import { Badge, ExpandableParagraph } from '../common';
 const dummyText =
   'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque recusandae beatae expedita. Porro explicabo labore voluptates incidunt nihil doloremque obcaecati suscipit corporis expedita amet, minima, cumque, ipsam quo nobis aspernatur! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque recusandae beatae expedita. Porro explicabo labore voluptates incidunt nihil doloremque obcaecati suscipit corporis expedita amet, minima, cumque, ipsam quo nobis aspernatur! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque recusandae beatae expedita. Porro explicabo labore voluptates incidunt nihil doloremque obcaecati suscipit corporis expedita amet, minima, cumque, ipsam quo nobis aspernatur! Lorem ';
 
+/**
+ * Renders a feed item displaying a user profile, carousel, view and comment counts, timestamp, expandable post content, and tags.
+ *
+ * Composes several UI components to present a static example of a social feed post with hardcoded data.
+ *
+ * @returns The feed item React element.
+ */
 export default function FeedItem() {
   return (
     <div className="flex flex-col gap-2">

@@ -19,6 +19,11 @@ type BackwardNavLinkProps = {
 };
 type NavLinkProps = ForwardNavLinkProps | BackwardNavLinkProps;
 
+/**
+ * Renders a navigation link that either navigates to a specified route or goes back in browser history.
+ *
+ * If the `back` prop is true, renders an anchor element that navigates back in history when clicked. Otherwise, renders a Next.js `Link` that navigates to the provided `href`, applying the `activeClassName` if the current path matches the link's destination.
+ */
 export default function NavLink(props: React.PropsWithChildren<NavLinkProps>) {
   const pathname = usePathname();
   const router = useRouter();
