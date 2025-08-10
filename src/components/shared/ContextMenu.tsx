@@ -11,7 +11,7 @@ interface ContextMenuProps {
 }
 
 export default function ContextMenu({ menus }: ContextMenuProps) {
-  const { closeModal } = useModalContext();
+  const { closeAll } = useModalContext();
   const buttonConfig = useMemo(
     () => ({
       modify: {
@@ -42,19 +42,20 @@ export default function ContextMenu({ menus }: ContextMenuProps) {
   );
 
   return (
-    <div className="flex flex-col gap-3">
+    <ul className="flex flex-col gap-3">
       {menus.map((menu, idx) => (
-        <Button
-          key={idx}
-          className={buttonConfig[menu].className}
-          onClick={() => {
-            buttonConfig[menu].handleClick();
-            closeModal();
-          }}
-        >
-          {buttonConfig[menu].label}
-        </Button>
+        <li key={idx}>
+          <Button
+            className={buttonConfig[menu].className}
+            onClick={() => {
+              buttonConfig[menu].handleClick();
+              closeAll();
+            }}
+          >
+            {buttonConfig[menu].label}
+          </Button>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 }
