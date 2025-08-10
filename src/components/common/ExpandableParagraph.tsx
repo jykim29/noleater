@@ -12,7 +12,9 @@ export default function ExpandableParagraph({
   children,
 }: ExpandableParagraphProps) {
   const [isExpand, setIsExpand] = useState<boolean>(false);
-  const text = isExpand ? children : children.slice(0, charLimit) + '...';
+  const isLimitOver = children.length > charLimit;
+  const text =
+    isExpand || !isLimitOver ? children : children.slice(0, charLimit) + '...';
 
   if (typeof children !== 'string') return null;
 
@@ -20,15 +22,17 @@ export default function ExpandableParagraph({
     setIsExpand((prev) => !prev);
   };
   return (
-    <p className="break-all">
+    <p id="content" className="break-all">
       {text}
-      {!isExpand && (
+      {isLimitOver && (
         <button
           className="text-body-sm text-gray-60 ml-2"
           type="button"
+          aria-expanded={isExpand}
+          aria-controls="content"
           onClick={handleClick}
         >
-          더보기
+          {isExpand ? '접기' : '더보기'}
         </button>
       )}
     </p>
