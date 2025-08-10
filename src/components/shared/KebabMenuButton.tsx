@@ -8,6 +8,11 @@ interface KebabMenuButtonProps {
   contextMenu: React.ReactNode;
 }
 
+/**
+ * Renders a button with a kebab menu icon that opens a bottom sheet modal displaying the provided context menu content when clicked.
+ *
+ * @param contextMenu - The React node to display in the bottom sheet modal.
+ */
 export default function KebabMenuButton({ contextMenu }: KebabMenuButtonProps) {
   const { open } = useModalContext();
   const handleClick = useCallback(() => {

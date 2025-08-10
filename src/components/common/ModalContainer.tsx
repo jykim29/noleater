@@ -9,6 +9,13 @@ interface ModalProps {
   className?: string;
 }
 
+/**
+ * Renders modal content into a portal when the modal is visible.
+ *
+ * Displays the modal content provided by the modal context inside an overlay, mounted to the DOM element with id `modal`. Closes all modals when the overlay background is clicked.
+ *
+ * @param className - Optional CSS class name to apply to the overlay
+ */
 export default function ModalContainer({ className }: ModalProps) {
   const { isHidden, node, closeAll } = useModalContext();
 

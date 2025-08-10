@@ -3,6 +3,13 @@
 import { useCallback, useEffect, useState } from 'react';
 import { EmblaCarouselType } from 'embla-carousel';
 
+/**
+ * React hook that manages pagination state for an Embla carousel instance.
+ *
+ * Tracks the currently selected slide index and the total number of scroll snap points, updating state in response to carousel selection changes.
+ *
+ * @returns A tuple containing the current selected index and the total number of scroll snap points
+ */
 export default function useEmblaPagination(emblaApi?: EmblaCarouselType) {
   const [index, setIndex] = useState<number>(0);
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);

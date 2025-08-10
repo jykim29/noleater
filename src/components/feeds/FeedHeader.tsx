@@ -10,7 +10,11 @@ interface FeedHeaderProps {
 }
 
 // TODO
-// 1. 전체적으로 요소 크기가 너무 커서 줄여야 함
+/**
+ * Renders the header section of a feed item, displaying profile information, a follow button, and a menu with additional actions.
+ *
+ * @param profile - The profile data containing image source, username, and follow status
+ */
 
 export default function FeedHeader({ profile }: FeedHeaderProps) {
   return (

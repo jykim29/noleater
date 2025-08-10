@@ -1,5 +1,13 @@
 'use client';
 
+/**
+ * Renders a bottom sheet UI component fixed to the bottom of the viewport.
+ *
+ * Displays a draggable indicator bar at the top and renders the provided content within a styled container.
+ *
+ * @param children - The content to display inside the bottom sheet
+ * @returns The rendered bottom sheet element
+ */
 export default function BottomSheet({
   children,
 }: {

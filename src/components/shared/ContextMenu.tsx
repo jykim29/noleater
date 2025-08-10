@@ -10,6 +10,13 @@ interface ContextMenuProps {
   menus: Menu[];
 }
 
+/**
+ * Renders a vertical context menu with action buttons based on the provided menu types.
+ *
+ * Displays a list of buttons for each menu key in the `menus` prop, applying appropriate labels and styles. When a button is clicked, it performs the associated action and closes all open modals.
+ *
+ * @param menus - An array of menu keys specifying which actions to display ('modify', 'delete', 'report')
+ */
 export default function ContextMenu({ menus }: ContextMenuProps) {
   const { closeAll } = useModalContext();
   const buttonConfig = useMemo(

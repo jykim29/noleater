@@ -7,6 +7,14 @@ interface OverlayProps {
   onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
 
+/**
+ * Renders a fixed, full-screen overlay container with customizable styling and click handling.
+ *
+ * Merges default overlay styles with any additional class names provided. Supports rendering nested children and an optional click event handler.
+ *
+ * @param className - Additional class names to merge with the default overlay styles
+ * @param onClick - Optional click event handler for the overlay container
+ */
 export default function Overlay({
   className: newClassName,
   onClick: handleClick,

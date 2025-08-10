@@ -4,6 +4,12 @@ interface GridItemProps {
   className?: string;
 }
 
+/**
+ * Renders a square grid item container with default styling, allowing additional Tailwind CSS classes and custom content.
+ *
+ * @param className - Additional Tailwind CSS classes to merge with the default styles
+ * @returns A `div` element styled as a square grid item containing the provided children
+ */
 export default function GridItem({
   className: newClassName,
   children,

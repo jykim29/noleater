@@ -5,6 +5,16 @@ interface ButtonProps extends React.ComponentPropsWithoutRef<'button'> {
   className?: string;
 }
 
+/**
+ * Renders a styled button element with customizable type, class names, and additional button attributes.
+ *
+ * Merges default Tailwind CSS classes with any provided `className` and applies them to the button.
+ * The button type defaults to `'button'` if not specified.
+ *
+ * @param type - The button's behavior type (`'button'`, `'submit'`, or `'reset'`). Defaults to `'button'`.
+ * @param className - Additional CSS classes to merge with the default styling.
+ * @param children - Content to display inside the button.
+ */
 export default function Button({
   type: buttonType = 'button',
   className: newClassName,

@@ -3,6 +3,11 @@
 import Image from 'next/image';
 import { Carousel } from '../common';
 
+/**
+ * Renders a carousel with two image slides and a numeric page indicator.
+ *
+ * The carousel displays two images with different aspect ratios and rounded corners, and includes a numeric indicator positioned at the top right.
+ */
 export default function FeedCarousel() {
   return (
     <Carousel>

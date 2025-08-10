@@ -10,6 +10,13 @@ const stateVariants = {
   notFollow: '',
 };
 
+/**
+ * Renders a button that visually indicates and toggles between followed and not-followed states.
+ *
+ * The button label displays "팔로잉" when `isFollowed` is true and "팔로우" when false, with corresponding styling for each state.
+ *
+ * @param isFollowed - If true, applies the "followed" style and label; otherwise, applies the "not followed" style and label.
+ */
 export default function FollowButton({
   isFollowed = false,
   ...rest

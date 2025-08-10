@@ -7,6 +7,12 @@ interface PortalProps {
   selector: string;
 }
 
+/**
+ * Renders children into a DOM element specified by a CSS selector using React Portal.
+ *
+ * @param selector - The CSS selector string identifying the target DOM element for the portal
+ * @returns The portal-rendered children, or `null` if the component is not yet mounted
+ */
 export default function Portal({
   selector,
   children,
