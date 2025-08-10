@@ -27,10 +27,6 @@ interface SlideProps {
 interface PageIndicatorProps {
   type?: 'dotted' | 'numeric';
   position?: { x: 'left' | 'right'; y: 'top' | 'bottom' };
-  onClick?: (
-    targetElement: HTMLButtonElement,
-    emblaApi: EmblaCarouselType
-  ) => void;
 }
 
 function Carousel({
@@ -88,11 +84,7 @@ const indicatorPositionVariants = {
   bottom: 'bottom-2',
 };
 
-function PageIndicator({
-  type = 'dotted',
-  position,
-  onClick: handleClick,
-}: PageIndicatorProps) {
+function PageIndicator({ type = 'dotted', position }: PageIndicatorProps) {
   const { currentSlideNumber, totalSlideNumber, emblaApi } =
     useCarouselContext();
   const xClass = position
@@ -101,13 +93,13 @@ function PageIndicator({
   const yClass = position
     ? indicatorPositionVariants[position.y]
     : indicatorPositionVariants.bottom;
-  const Component = handleClick ? 'button' : 'span';
 
   const handleClickIndicatorButton = (
     e: React.MouseEvent<HTMLButtonElement>
   ) => {
-    const el = e.currentTarget;
-    if (typeof handleClick === 'function') return handleClick(el, emblaApi);
+    const currentIdx = Number(e.currentTarget.dataset.slideIdx);
+    if (Number.isNaN(currentIdx)) return;
+    return emblaApi.scrollTo(currentIdx);
   };
 
   if (totalSlideNumber < 2) return null;
@@ -119,16 +111,18 @@ function PageIndicator({
       {type === 'dotted' ? (
         [...Array(totalSlideNumber)].map((_, idx) => {
           return (
-            <Component
+            <button
               key={idx}
               data-slide-idx={idx}
-              type={handleClick && 'button'}
+              type="button"
               className={twMerge(
                 'border-primary-60 h-2.5 w-2.5 rounded-full border',
                 currentSlideNumber === idx && 'bg-primary-60'
               )}
-              onClick={(e) => handleClickIndicatorButton(e)}
-            ></Component>
+              onClick={handleClickIndicatorButton}
+            >
+              <span className="sr-only">{`${idx + 1}번째 슬라이드로 이동`}</span>
+            </button>
           );
         })
       ) : (
