@@ -1,13 +1,22 @@
 'use client';
 
-import { createContext, useCallback, useContext, useState } from 'react';
-import { BottomSheet } from '@/components/common';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from 'react';
+import { BottomSheet, CenterModal, ModalContainer } from '@/components/common';
 
 interface ModalContextType {
   isHidden: boolean;
   setIsHidden: React.Dispatch<React.SetStateAction<boolean>>;
-  openModal: (node: React.ReactNode) => void;
-  closeModal: () => void;
+  open: {
+    bottomSheet: (node: React.ReactNode) => void;
+    centerModal: (node: React.ReactNode) => void;
+  };
+  closeAll: () => void;
   node?: React.ReactNode;
 }
 
@@ -31,24 +40,33 @@ export function ModalContextProvider({
   const [isHidden, setIsHidden] = useState<boolean>(true);
   const [node, setNode] = useState<React.ReactNode | null>(null);
 
-  const openModal: ModalContextType['openModal'] = useCallback((node) => {
+  const openBottomSheet = useCallback((node: React.ReactNode) => {
     document.body.style = 'overflow-y: hidden';
-    setNode(node);
+    setNode(<BottomSheet>{node}</BottomSheet>);
     setIsHidden(false);
   }, []);
-
-  const closeModal: ModalContextType['closeModal'] = useCallback(() => {
+  const openCenterModal = useCallback((node: React.ReactNode) => {
+    document.body.style = 'overflow-y: hidden';
+    setNode(<CenterModal>{node}</CenterModal>);
+    setIsHidden(false);
+  }, []);
+  const closeAll = useCallback(() => {
     document.body.removeAttribute('style');
     setNode(null);
     setIsHidden(true);
   }, []);
+  const open = useMemo(
+    () => ({
+      bottomSheet: openBottomSheet,
+      centerModal: openCenterModal,
+    }),
+    [openBottomSheet, openCenterModal]
+  );
 
   return (
-    <ModalContext
-      value={{ isHidden, setIsHidden, openModal, closeModal, node }}
-    >
+    <ModalContext value={{ isHidden, setIsHidden, open, closeAll, node }}>
       {children}
-      <BottomSheet />
+      <ModalContainer />
     </ModalContext>
   );
 }
