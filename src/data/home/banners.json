@@ -2,27 +2,27 @@
   "data": [
     {
       "id": 1,
-      "url": "https://picsum.photos/300/200?random=1",
+      "imgSrc": "https://picsum.photos/300/200?random=1",
       "alt": "random image 1"
     },
     {
       "id": 2,
-      "url": "https://picsum.photos/300/200?random=2",
+      "imgSrc": "https://picsum.photos/300/200?random=2",
       "alt": "random image 2"
     },
     {
       "id": 3,
-      "url": "https://picsum.photos/300/200?random=3",
+      "imgSrc": "https://picsum.photos/300/200?random=3",
       "alt": "random image 3"
     },
     {
       "id": 4,
-      "url": "https://picsum.photos/300/200?random=4",
+      "imgSrc": "https://picsum.photos/300/200?random=4",
       "alt": "random image 3"
     },
     {
       "id": 5,
-      "url": "https://picsum.photos/300/200?random=5",
+      "imgSrc": "https://picsum.photos/300/200?random=5",
       "alt": "random image 3"
     }
   ],
