@@ -3,3 +3,4 @@ export { default as FeedItem } from './FeedItem';
 export { default as FeedCarousel } from './FeedCarousel';
 export { default as FeedList } from './FeedList';
 export { default as FeedGrid } from './FeedGrid';
+export { default as FeedGridItem } from './FeedGridItem';

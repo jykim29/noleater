@@ -19,3 +19,5 @@ export { default as GridItem } from './GridItem';
 export { default as Portal } from './Portal';
 export { default as Overlay } from './Overlay';
 export { default as BottomSheet } from './BottomSheet';
+export { default as CenterModal } from './CenterModal';
+export { default as ModalContainer } from './ModalContainer';
