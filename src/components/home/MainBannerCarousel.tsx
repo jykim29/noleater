@@ -23,13 +23,7 @@ export default function MainBannerCarousel() {
           </Carousel.Slide>
         ))}
       </Carousel.Container>
-      <Carousel.PageIndicator
-        type="dotted"
-        onClick={(el, emblaApi) => {
-          const idx = Number(el.dataset.slideIdx);
-          if (!Number.isNaN(idx)) emblaApi.scrollTo(idx);
-        }}
-      />
+      <Carousel.PageIndicator type="dotted" />
     </Carousel>
   );
 }
