@@ -1,39 +1,50 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { twMerge } from 'tailwind-merge';
 
-interface NavLinkProps extends React.PropsWithChildren {
+type ForwardNavLinkProps = {
   href: string;
+  back?: never;
   className?: string;
   activeClassName?: string;
-  refresh?: boolean;
-}
+} & Omit<React.ComponentProps<typeof Link>, 'href'>;
 
-export default function NavLink({
-  href,
-  className,
-  activeClassName,
-  refresh = false,
-  children,
-}: NavLinkProps) {
+type BackwardNavLinkProps = {
+  href?: never;
+  back: true;
+  className?: string;
+  activeClassName?: string;
+};
+type NavLinkProps = ForwardNavLinkProps | BackwardNavLinkProps;
+
+export default function NavLink(props: React.PropsWithChildren<NavLinkProps>) {
   const pathname = usePathname();
-  const isActive = pathname === href;
-  const mergedClassName = isActive
-    ? twMerge(className || '', activeClassName || '')
-    : className;
+  const router = useRouter();
+  if ('back' in props && props.back) {
+    return (
+      <a
+        className={props.className}
+        href="#"
+        onClick={(e) => {
+          e.preventDefault();
+          router.back();
+        }}
+      >
+        {props.children}
+      </a>
+    );
+  }
 
-  const handleClickRefresh = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    if (refresh && window) {
-      e.preventDefault();
-      window.location.reload();
-    }
-    return;
-  };
+  const mergedClassName = twMerge(
+    props.className,
+    pathname === props.href && props.activeClassName
+  );
+
   return (
-    <Link className={mergedClassName} href={href} onClick={handleClickRefresh}>
-      {children}
+    <Link className={mergedClassName} href={props.href}>
+      {props.children}
     </Link>
   );
 }
