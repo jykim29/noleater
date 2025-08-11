@@ -1,6 +1,5 @@
 'use client';
 
-import { EmblaCarouselType } from 'embla-carousel';
 import { EmblaOptionsType } from 'embla-carousel';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay, { AutoplayOptionsType } from 'embla-carousel-autoplay';
@@ -38,15 +37,15 @@ function Carousel({
     options,
     autoplayOptions && [Autoplay(autoplayOptions)]
   );
-  const [currentSlideNumber, totalSlideNumber] = useEmblaPagination(emblaApi);
+  const [currentSlideIndex, totalSlideCount] = useEmblaPagination(emblaApi);
 
   return (
     <div className="embla" ref={emblaRef}>
       {emblaApi ? (
         <CarouselContextProvider
           emblaApi={emblaApi}
-          currentSlideNumber={currentSlideNumber}
-          totalSlideNumber={totalSlideNumber}
+          currentSlideIndex={currentSlideIndex}
+          totalSlideCount={totalSlideCount}
         >
           {children}
         </CarouselContextProvider>
@@ -85,8 +84,7 @@ const indicatorPositionVariants = {
 };
 
 function PageIndicator({ type = 'dotted', position }: PageIndicatorProps) {
-  const { currentSlideNumber, totalSlideNumber, emblaApi } =
-    useCarouselContext();
+  const { currentSlideIndex, totalSlideCount, emblaApi } = useCarouselContext();
   const xClass = position
     ? indicatorPositionVariants[position.x]
     : indicatorPositionVariants.right;
@@ -97,19 +95,20 @@ function PageIndicator({ type = 'dotted', position }: PageIndicatorProps) {
   const handleClickIndicatorButton = (
     e: React.MouseEvent<HTMLButtonElement>
   ) => {
-    const currentIdx = Number(e.currentTarget.dataset.slideIdx);
-    if (Number.isNaN(currentIdx)) return;
-    return emblaApi.scrollTo(currentIdx);
+    const targetSlideIdx = Number(e.currentTarget.dataset.slideIdx);
+    const isSafeIdx = targetSlideIdx >= 0 && targetSlideIdx <= totalSlideCount;
+    if (Number.isNaN(targetSlideIdx) || !isSafeIdx) return;
+    return emblaApi.scrollTo(targetSlideIdx);
   };
 
-  if (totalSlideNumber < 2) return null;
+  if (totalSlideCount < 2) return null;
 
   return (
     <div
       className={twMerge('absolute flex items-center gap-1.5', xClass, yClass)}
     >
       {type === 'dotted' ? (
-        [...Array(totalSlideNumber)].map((_, idx) => {
+        [...Array(totalSlideCount)].map((_, idx) => {
           return (
             <button
               key={idx}
@@ -117,7 +116,7 @@ function PageIndicator({ type = 'dotted', position }: PageIndicatorProps) {
               type="button"
               className={twMerge(
                 'border-primary-60 h-2.5 w-2.5 rounded-full border',
-                currentSlideNumber === idx && 'bg-primary-60'
+                currentSlideIndex === idx && 'bg-primary-60'
               )}
               onClick={handleClickIndicatorButton}
             >
@@ -126,7 +125,7 @@ function PageIndicator({ type = 'dotted', position }: PageIndicatorProps) {
           );
         })
       ) : (
-        <span className="text-caption-xs rounded-full bg-[rgba(0,0,0,0.5)] px-2 py-1 text-white">{`${currentSlideNumber + 1} / ${totalSlideNumber}`}</span>
+        <span className="text-caption-xs rounded-full bg-[rgba(0,0,0,0.5)] px-2 py-1 text-white">{`${currentSlideIndex + 1} / ${totalSlideCount}`}</span>
       )}
     </div>
   );

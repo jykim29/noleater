@@ -3,8 +3,8 @@ import { createContext, useContext } from 'react';
 
 interface CarouselContextType {
   emblaApi: EmblaCarouselType;
-  currentSlideNumber: number;
-  totalSlideNumber: number;
+  currentSlideIndex: number;
+  totalSlideCount: number;
 }
 
 const CarouselContext = createContext<CarouselContextType | null>(null);
@@ -20,12 +20,12 @@ export const useCarouselContext = () => {
 
 export function CarouselContextProvider({
   emblaApi,
-  currentSlideNumber,
-  totalSlideNumber,
+  currentSlideIndex,
+  totalSlideCount,
   children,
 }: React.PropsWithChildren<CarouselContextType>) {
   return (
-    <CarouselContext value={{ emblaApi, currentSlideNumber, totalSlideNumber }}>
+    <CarouselContext value={{ emblaApi, currentSlideIndex, totalSlideCount }}>
       {children}
     </CarouselContext>
   );
