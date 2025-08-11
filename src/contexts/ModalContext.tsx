@@ -8,6 +8,7 @@ import {
   useState,
 } from 'react';
 import { BottomSheet, CenterModal, ModalContainer } from '@/components/common';
+import { el } from '@/utils';
 
 interface ModalContextType {
   isHidden: boolean;
@@ -41,11 +42,13 @@ export function ModalContextProvider({
   const [node, setNode] = useState<React.ReactNode | null>(null);
 
   const openBottomSheet = useCallback((node: React.ReactNode) => {
+    if (!el('#modal')) return;
     document.body.style.setProperty('overflow-y', 'hidden');
     setNode(<BottomSheet>{node}</BottomSheet>);
     setIsHidden(false);
   }, []);
   const openCenterModal = useCallback((node: React.ReactNode) => {
+    if (!el('#modal')) return;
     document.body.style.setProperty('overflow-y', 'hidden');
     setNode(<CenterModal>{node}</CenterModal>);
     setIsHidden(false);
