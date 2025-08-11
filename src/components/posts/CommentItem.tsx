@@ -1,6 +1,6 @@
 import { twMerge } from 'tailwind-merge';
 import { ProfileImage } from '../common';
-import formatRelativeTime from '@/utils/formatRelativeTime';
+import { formatRelativeTime } from '@/utils';
 
 interface CommentItemProps {
   isMe: boolean;

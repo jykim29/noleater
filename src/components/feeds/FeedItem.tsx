@@ -1,8 +1,8 @@
-import formatRelativeTime from '@/utils/formatRelativeTime';
 import { IconWithCount } from '../shared';
 import FeedCarousel from './FeedCarousel';
 import FeedHeader from './FeedHeader';
 import { Badge, ExpandableParagraph } from '../common';
+import { formatRelativeTime } from '@/utils';
 
 const dummyText =
   'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque recusandae beatae expedita. Porro explicabo labore voluptates incidunt nihil doloremque obcaecati suscipit corporis expedita amet, minima, cumque, ipsam quo nobis aspernatur! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque recusandae beatae expedita. Porro explicabo labore voluptates incidunt nihil doloremque obcaecati suscipit corporis expedita amet, minima, cumque, ipsam quo nobis aspernatur! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque recusandae beatae expedita. Porro explicabo labore voluptates incidunt nihil doloremque obcaecati suscipit corporis expedita amet, minima, cumque, ipsam quo nobis aspernatur! Lorem ';
