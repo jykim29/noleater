@@ -25,12 +25,13 @@ export default function FeedGridItem({
       <Button
         type="button"
         className="relative block h-full w-full border-none bg-none p-0"
+        aria-label="피드 상세보기"
         onClick={() => handleClick(id)}
       >
         <Image
           className="object-cover"
           src={imgSrc}
-          alt=""
+          alt="피드 이미지 썸네일"
           fill
           sizes="100vw"
         />
