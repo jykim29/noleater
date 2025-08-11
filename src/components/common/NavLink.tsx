@@ -9,7 +9,7 @@ type ForwardNavLinkProps = {
   back?: never;
   className?: string;
   activeClassName?: string;
-} & Omit<React.ComponentProps<typeof Link>, 'href'>;
+} & Omit<React.ComponentPropsWithoutRef<typeof Link>, 'href'>;
 
 type BackwardNavLinkProps = {
   href?: never;
@@ -24,26 +24,26 @@ export default function NavLink(props: React.PropsWithChildren<NavLinkProps>) {
   const router = useRouter();
   if ('back' in props && props.back) {
     return (
-      <a
+      <button
         className={props.className}
-        href="#"
-        onClick={(e) => {
-          e.preventDefault();
+        type="button"
+        onClick={() => {
           router.back();
         }}
       >
         {props.children}
-      </a>
+      </button>
     );
   }
 
+  const { href, className, activeClassName, ...restLinkProps } = props;
   const mergedClassName = twMerge(
-    props.className,
-    pathname === props.href && props.activeClassName
+    className,
+    pathname === href && activeClassName
   );
 
   return (
-    <Link className={mergedClassName} href={props.href}>
+    <Link className={mergedClassName} href={href} {...restLinkProps}>
       {props.children}
     </Link>
   );
