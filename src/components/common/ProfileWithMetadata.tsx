@@ -21,7 +21,7 @@ export default function ProfileWithMetadata({
     <div className="flex items-center gap-3">
       <ProfileImage src={imgSrc} username={username} />
       <div>
-        <span>프로필이름</span>
+        <span>{username}</span>
         {metadata && (
           <div className="flex items-center gap-2">
             {metadata.views && (
