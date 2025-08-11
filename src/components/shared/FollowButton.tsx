@@ -20,6 +20,7 @@ export default function FollowButton({
         stateVariants.common,
         isFollowed ? stateVariants.follow : stateVariants.notFollow
       )}
+      aria-pressed={isFollowed}
       {...rest}
     >
       {isFollowed ? '팔로잉' : '팔로우'}
