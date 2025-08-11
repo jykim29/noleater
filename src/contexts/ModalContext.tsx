@@ -41,17 +41,17 @@ export function ModalContextProvider({
   const [node, setNode] = useState<React.ReactNode | null>(null);
 
   const openBottomSheet = useCallback((node: React.ReactNode) => {
-    document.body.style = 'overflow-y: hidden';
+    document.body.style.setProperty('overflow-y', 'hidden');
     setNode(<BottomSheet>{node}</BottomSheet>);
     setIsHidden(false);
   }, []);
   const openCenterModal = useCallback((node: React.ReactNode) => {
-    document.body.style = 'overflow-y: hidden';
+    document.body.style.setProperty('overflow-y', 'hidden');
     setNode(<CenterModal>{node}</CenterModal>);
     setIsHidden(false);
   }, []);
   const closeAll = useCallback(() => {
-    document.body.removeAttribute('style');
+    document.body.style.removeProperty('overflow-y');
     setNode(null);
     setIsHidden(true);
   }, []);
