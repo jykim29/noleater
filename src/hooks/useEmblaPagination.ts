@@ -3,7 +3,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import { EmblaCarouselType } from 'embla-carousel';
 
-export default function useEmblaPagination(emblaApi?: EmblaCarouselType) {
+export default function useEmblaPagination(
+  emblaApi?: EmblaCarouselType
+): [number, number] {
   const [index, setIndex] = useState<number>(0);
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
 
