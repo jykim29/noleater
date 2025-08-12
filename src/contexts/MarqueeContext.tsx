@@ -13,7 +13,7 @@ export const useMarqueeContext = () => {
   const context = useContext(MarqueeContext);
   if (!context)
     throw new Error(
-      'useMarqueeContext훅은 Marquee 컴포넌트 내부에서만 사용되어야 합니다.'
+      'useMarqueeContext훅은 MarqueeContextProvider 컴포넌트 내부에서만 사용되어야 합니다.'
     );
 
   return context;

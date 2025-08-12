@@ -15,7 +15,7 @@ export default function ProfileImage({
   return (
     <div
       className={twMerge(
-        'relative h-12 w-12 flex-none overflow-hidden rounded-full',
+        'relative h-10 w-10 flex-none overflow-hidden rounded-full',
         newClassName
       )}
     >
