@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useId, useState } from 'react';
 
 interface ExpandableParagraphProps {
   charLimit?: number;
@@ -12,24 +12,26 @@ export default function ExpandableParagraph({
   children,
 }: ExpandableParagraphProps) {
   const [isExpand, setIsExpand] = useState<boolean>(false);
+  const contentId = useId();
+
+  if (typeof children !== 'string') return null;
+
   const isLimitOver = children.length > charLimit;
   const text =
     isExpand || !isLimitOver ? children : children.slice(0, charLimit) + '...';
-
-  if (typeof children !== 'string') return null;
 
   const handleClick = () => {
     setIsExpand((prev) => !prev);
   };
   return (
-    <p id="content" className="break-all">
+    <p id={`${contentId}-content`} className="break-all">
       {text}
       {isLimitOver && (
         <button
           className="text-body-sm text-gray-60 ml-2"
           type="button"
           aria-expanded={isExpand}
-          aria-controls="content"
+          aria-controls={`${contentId}-content`}
           onClick={handleClick}
         >
           {isExpand ? '접기' : '더보기'}
