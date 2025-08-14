@@ -6,7 +6,7 @@ export default function NewPost() {
     <>
       <Header
         left={{
-          href: '../',
+          href: '/',
           src: '/assets/icons/arrow_left.svg',
           alt: '뒤로가기',
         }}
