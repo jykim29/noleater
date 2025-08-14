@@ -8,7 +8,7 @@ export default function PostView() {
     <>
       <Header
         left={{
-          href: '..',
+          href: '/',
           src: '/assets/icons/arrow_left.svg',
           alt: '뒤로가기',
         }}

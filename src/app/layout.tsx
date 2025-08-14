@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { Noto_Sans_KR } from 'next/font/google';
-import { Footer } from '@/components/layout';
 import { ModalContextProvider } from '@/contexts/ModalContext';
 import './globals.css';
 
@@ -25,7 +24,6 @@ export default function RootLayout({
       >
         <div className="relative mx-auto min-h-dvh w-full max-w-md min-w-xs bg-white">
           <ModalContextProvider>{children}</ModalContextProvider>
-          <Footer />
         </div>
         <div id="modal"></div>
       </body>
