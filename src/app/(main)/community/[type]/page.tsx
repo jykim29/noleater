@@ -1,7 +1,7 @@
 import { BoardPage } from '@/components/pages';
 import { notFound } from 'next/navigation';
 
-const allowedTypeList = ['freeboard', 'recipe', 'discussion'];
+const allowedTypeList = ['freeboard', 'myrecipe', 'discussion'];
 
 export default async function Board({
   params,
