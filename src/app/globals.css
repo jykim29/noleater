@@ -54,6 +54,24 @@
   --text-caption-xs--font-weight: 400;
   --text-caption-xs--letter-spacing: 0px;
 
+  /* gradient */
+  --background-image-primary-gradient: linear-gradient(
+    to top,
+    #ff7d29,
+    #fdb85f
+  );
+  --background-image-secondary-gradient: linear-gradient(
+    to top,
+    #fdb85f,
+    #ffe0b4
+  );
+  --background-image-gray-gradient: linear-gradient(to top, #bdbdbd, #ededed);
+  --background-image-light-gray-gradient: linear-gradient(
+    to top,
+    #ededed,
+    #ffffff
+  );
+
   /* animation */
   --animate-move-grid: moveGrid 5s linear infinite;
 
