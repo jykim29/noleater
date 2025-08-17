@@ -6,8 +6,8 @@ interface FollowButtonProps extends React.ComponentPropsWithoutRef<'button'> {
 }
 const stateVariants = {
   common: 'px-5 py-2',
-  follow: 'bg-none bg-white border-2 border-primary-100 text-primary-100',
-  notFollow: '',
+  follow: 'bg-white border-2 border-primary-100 text-primary-100',
+  notFollow: 'border-2 border-primary-60',
 };
 
 export default function FollowButton({

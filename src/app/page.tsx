@@ -13,7 +13,7 @@ export default async function Landing() {
           alt="놀잇터 로고"
         />
         <Link
-          className="from-primary-100 to-secondary-60 border-primary-60 disabled:from-gray-40 disabled:to-gray-20 disabled:border-gray-40 text-button-md rounded-full border bg-linear-0 px-5 py-2 text-white disabled:cursor-not-allowed pointer-fine:hover:not-disabled:brightness-95"
+          className="border-primary-60 text-button-md bg-primary-gradient rounded-full border px-5 py-2 text-white pointer-fine:hover:brightness-95"
           href="/login"
         >
           입장하기

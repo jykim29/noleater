@@ -16,7 +16,7 @@ export default function KebabMenuButton({ contextMenu }: KebabMenuButtonProps) {
 
   return (
     <Button
-      className="pointer-fine:hover:bg-gray-20 h-8 w-8 border-none bg-[url(/assets/icons/kebab_menu.svg)] bg-center bg-no-repeat p-0"
+      className="pointer-fine:hover:bg-gray-20 h-8 w-8 border-none bg-transparent bg-[url(/assets/icons/kebab_menu.svg)] bg-center bg-no-repeat p-0"
       onClick={handleClick}
     >
       <span className="sr-only">더보기</span>

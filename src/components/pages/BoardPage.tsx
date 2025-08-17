@@ -19,10 +19,16 @@ export default function BoardPage() {
       </Header>
       <Content>
         <div className="flex items-center gap-3">
-          <Button className="border-none bg-none p-0 text-black" type="button">
+          <Button
+            className="border-none bg-transparent p-0 text-black"
+            type="button"
+          >
             <span className="text-heading-xl">전체</span>
           </Button>
-          <Button className="border-none bg-none p-0 text-black" type="button">
+          <Button
+            className="border-none bg-transparent p-0 text-black"
+            type="button"
+          >
             <span className="text-heading-xl text-gray-40">인기</span>
           </Button>
         </div>

@@ -6,8 +6,8 @@ export default function NavBar() {
     <nav className="relative flex h-full w-full items-end justify-between gap-3">
       <NavLink
         href="/feeds"
-        activeClassName="from-secondary-60 to-secondary-30"
-        className="from-gray-20 border-secondary-60 flex w-full flex-col items-center justify-center gap-0.5 rounded-t-lg border-x-2 border-t-2 bg-linear-0 from-0% to-white"
+        activeClassName="bg-secondary-gradient"
+        className="bg-light-gray-gradient border-secondary-60 flex w-full flex-col items-center justify-center gap-0.5 rounded-t-lg border-x-2 border-t-2"
       >
         <Image
           width={36}
@@ -19,8 +19,8 @@ export default function NavBar() {
       </NavLink>
       <NavLink
         href="/mypage"
-        activeClassName="from-secondary-60 to-secondary-30"
-        className="from-gray-20 border-secondary-60 flex w-full flex-col items-center justify-center gap-0.5 rounded-t-lg border-x-2 border-t-2 bg-linear-0 from-0% to-white"
+        activeClassName="bg-secondary-gradient"
+        className="bg-light-gray-gradient border-secondary-60 flex w-full flex-col items-center justify-center gap-0.5 rounded-t-lg border-x-2 border-t-2"
       >
         <Image
           width={36}
