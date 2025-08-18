@@ -18,7 +18,7 @@ export default function PostCategoryRadio({
     <label
       htmlFor={id}
       className={twMerge(
-        'text-caption-xs! has-checked:from-primary-100 has-checked:to-secondary-60 has-checked:border-primary-60 from-gray-40 to-gray-20 border-gray-40 cursor-pointer rounded-full border bg-linear-0 px-2 py-1.5 text-black has-checked:text-white',
+        'text-caption-xs! has-checked:bg-primary-gradient has-checked:border-primary-60 bg-gray-gradient border-gray-40 cursor-pointer rounded-full border px-2 py-1.5 text-black has-checked:text-white',
         newClassName
       )}
     >

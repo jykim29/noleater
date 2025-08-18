@@ -24,7 +24,7 @@ export default function FeedGridItem({
     <GridItem>
       <Button
         type="button"
-        className="relative block h-full w-full border-none bg-none p-0"
+        className="relative block h-full w-full border-none bg-transparent p-0"
         aria-label="피드 상세보기"
         onClick={() => handleClick(id)}
       >

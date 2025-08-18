@@ -14,7 +14,7 @@ export default function Button({
   return (
     <button
       className={twMerge(
-        'from-primary-100 to-secondary-60 border-primary-60 disabled:from-gray-40 disabled:to-gray-20 disabled:border-gray-40 text-button-md rounded-xl border bg-linear-0 px-5 py-2 text-white disabled:cursor-not-allowed pointer-fine:hover:not-disabled:brightness-95',
+        'border-primary-60 disabled:bg-gray-gradient disabled:border-gray-40 text-button-md bg-primary-gradient rounded-xl border px-5 py-2 text-white disabled:cursor-not-allowed pointer-fine:hover:not-disabled:brightness-95',
         newClassName
       )}
       type={buttonType}
