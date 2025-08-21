@@ -3,7 +3,7 @@
 import { createClient } from '@/libs/supabase/server';
 
 interface RegisterFormState {
-  error: string | null;
+  errorCode: string | null;
 }
 
 export async function register(
@@ -20,13 +20,14 @@ export async function register(
   );
 
   // simple validation
-  if (!isCheckedAgreement) return { error: '체크 동의' };
-  if (password !== passwordConfirm) return { error: '비밀번호 불일치' };
-  // if (!passwordRegex.test(password)) return { error: '비밀번호 패턴' };
+  if (!isCheckedAgreement) return { errorCode: 'not_checked_agreement' };
+  if (password !== passwordConfirm) return { errorCode: 'not_match_password' };
+  if (!passwordRegex.test(password))
+    return { errorCode: 'incorrect_password_pattern' };
 
-  const { data, error } = await supabase.auth.signUp({ email, password });
+  const { error } = await supabase.auth.signUp({ email, password });
 
-  if (error) return { error: error.code as string };
+  if (error) return { errorCode: error.code as string };
   console.log(error);
-  return { error: null };
+  return { errorCode: null };
 }

@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation';
 
 interface LoginFormState {
   user: User | null;
-  error: string | null;
+  errorCode: string | null;
 }
 
 export async function login(
@@ -22,16 +22,14 @@ export async function login(
 
   // simple validation
   if (!emailRegex.test(email))
-    return { user: null, error: '잘못된 이메일 주소' };
-  if (password.length < 8 || password.length > 20)
-    return { user: null, error: '비밀번호 길이' };
+    return { user: null, errorCode: 'invalid_email_pattern' };
 
-  const { data, error } = await supabase.auth.signInWithPassword({
+  const { error } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
 
-  if (error) return { user: null, error: error.code as string };
+  if (error) return { user: null, errorCode: error.code as string };
 
   redirect('/home');
 }
