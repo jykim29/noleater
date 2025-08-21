@@ -2,7 +2,6 @@ import { type NextRequest } from 'next/server';
 import { updateSession } from './libs/supabase/middleware';
 
 export async function middleware(request: NextRequest) {
-  const url = request.nextUrl.clone();
   return await updateSession(request);
 }
 
