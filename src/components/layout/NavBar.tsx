@@ -18,7 +18,7 @@ export default function NavBar() {
         <span className="text-caption-xs">피드</span>
       </NavLink>
       <NavLink
-        href="/mypage"
+        href="/profile/me"
         activeClassName="bg-secondary-gradient"
         className="bg-light-gray-gradient border-secondary-60 flex w-full flex-col items-center justify-center gap-0.5 rounded-t-lg border-x-2 border-t-2"
       >
