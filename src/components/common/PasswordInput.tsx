@@ -49,6 +49,7 @@ export default function PasswordInput({
         type="button"
         onMouseDown={(e) => e.preventDefault()} // 버튼 클릭 시, input 요소 focus-out 방지 이벤트
         onClick={handleClickToggle}
+        tabIndex={-1}
       >
         <span className="sr-only">비밀번호 표시</span>
       </button>

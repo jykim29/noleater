@@ -78,6 +78,7 @@ export default function RegisterForm() {
             <button
               className="text-body-sm text-positive underline"
               type="button"
+              tabIndex={-1}
             >
               약관 보기
             </button>
