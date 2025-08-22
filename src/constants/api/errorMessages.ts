@@ -6,6 +6,7 @@ interface ErrorCodes {
 
 export const errorMessages: ErrorCodes = {
   auth: {
+    unexpected_failure: '예상치못한 오류가 발생했습니다.',
     email_address_invalid: '유효하지않은 이메일 주소입니다.',
     email_exists: '가입된 이메일 주소가 이미 존재합니다.',
     email_not_confirmed: '이메일 주소가 확인되지 않았습니다.',
