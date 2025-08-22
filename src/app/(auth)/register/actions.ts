@@ -65,6 +65,12 @@ export async function register(
   const { error } = await supabase.auth.signUp({
     email: newFormData.email,
     password: newFormData.password,
+    options: {
+      data: {
+        username: `user${Math.floor(Math.random() * (9999999 - 1000000 + 1)) + 1000000}`,
+        avatar_url: 'https://picsum.photos/100/100',
+      },
+    },
   });
   // response error handling
   if (error)
@@ -73,7 +79,9 @@ export async function register(
       success: false,
       error: {
         code: error.code as string,
-        message: errorMessages.auth[error.code as AuthErrorCode] || '',
+        message:
+          errorMessages.auth[error.code as AuthErrorCode] ||
+          (error.code as string),
       },
     };
 
