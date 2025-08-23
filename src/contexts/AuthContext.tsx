@@ -8,7 +8,7 @@ type AuthStoreApi = ReturnType<typeof createAuthStore>;
 
 const AuthContext = createContext<AuthStoreApi | null>(null);
 
-export const useAuthContext = <T,>(selectorFn: (store: AuthStore) => T): T => {
+export const useAuthStore = <T,>(selectorFn: (store: AuthStore) => T): T => {
   const ctx = useContext(AuthContext);
 
   if (!ctx) {
@@ -21,13 +21,15 @@ export const useAuthContext = <T,>(selectorFn: (store: AuthStore) => T): T => {
 };
 
 export function AuthContextProvider({
+  initialState,
   children,
 }: {
+  initialState?: any;
   children: React.ReactNode;
 }) {
   const storeRef = useRef<AuthStoreApi | null>(null);
   if (storeRef.current === null) {
-    storeRef.current = createAuthStore();
+    storeRef.current = createAuthStore(initialState);
   }
   return <AuthContext value={storeRef.current}>{children}</AuthContext>;
 }
