@@ -4,10 +4,7 @@ import { EmblaOptionsType } from 'embla-carousel';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay, { AutoplayOptionsType } from 'embla-carousel-autoplay';
 import { twMerge } from 'tailwind-merge';
-import {
-  CarouselContextProvider,
-  useCarouselContext,
-} from '@/contexts/CarouselContext';
+import { CarouselContextProvider, useCarouselContext } from '@/contexts';
 import useEmblaPagination from '@/hooks/useEmblaPagination';
 
 interface CarouselProps {

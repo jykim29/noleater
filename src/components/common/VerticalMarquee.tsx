@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { MarqueeContextProvider } from '@/contexts/MarqueeContext';
+import { MarqueeContextProvider } from '@/contexts';
 import MarqueeItem from './MarqueeItem';
 import { twMerge } from 'tailwind-merge';
 
