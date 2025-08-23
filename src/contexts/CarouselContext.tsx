@@ -1,5 +1,7 @@
-import { EmblaCarouselType } from 'embla-carousel';
+'use client';
+
 import { createContext, useContext } from 'react';
+import { EmblaCarouselType } from 'embla-carousel';
 
 interface CarouselContextValue {
   emblaApi: EmblaCarouselType;
