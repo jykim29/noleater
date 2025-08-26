@@ -1,32 +1,18 @@
 'use server';
 
-import { redirect } from 'next/navigation';
-import * as z from 'zod';
-import { User } from '@supabase/supabase-js';
 import { createClient } from '@/libs/supabase/server';
 import { errorMessages } from '@/constants/api';
-import { AuthErrorCode } from '@/types/api';
+import { AuthErrorCode } from '@/types/supabase';
+import { validateWithZod } from '@/utils';
+import { LoginFormDataSchema } from '@/schemas';
+import { LoginActionState } from '@/types/actionState.interfaces';
 
-interface LoginActionState {
-  data?: LoginFormData;
-  user?: User;
-  success?: boolean;
-  error?: {
-    code: string;
-    message: string;
-  };
-}
-type LoginFormData = z.infer<typeof LoginFormDataSchema>;
-
-const LoginFormDataSchema = z.object({
-  email: z.email('invalid_email_pattern'),
-  password: z.string(),
-});
-
-export async function login(
-  _prevState: LoginActionState,
+type Login = (
+  prevState: LoginActionState,
   formData: FormData
-): Promise<LoginActionState> {
+) => Promise<LoginActionState>;
+
+export const login: Login = async (_prevState, formData) => {
   const supabase = await createClient();
 
   const newFormData = {
@@ -35,36 +21,62 @@ export async function login(
   };
 
   // form validation with zod
-  const result = LoginFormDataSchema.safeParse(newFormData);
+  const result = validateWithZod(LoginFormDataSchema, newFormData);
   // zoderror handling
   if (!result.success) {
     return {
-      data: { ...newFormData, password: '' },
       success: false,
       error: {
-        code: result.error.issues[0].message,
+        code: result.error.message,
         message:
-          errorMessages.auth[result.error.issues[0].message as AuthErrorCode] ||
-          '',
+          errorMessages.auth[result.error.message as AuthErrorCode] || '',
       },
+      formData: { ...newFormData, password: '' },
+      user: null,
     };
   }
 
   // request signin to supabase auth
-  const { error } = await supabase.auth.signInWithPassword({
+  const { data, error } = await supabase.auth.signInWithPassword({
     email: newFormData.email,
     password: newFormData.password,
   });
   // response error handling
   if (error)
     return {
-      data: { ...newFormData, password: '' },
+      formData: newFormData,
+      user: null,
       success: false,
       error: {
         code: error.code as string,
-        message: errorMessages.auth[error.code as AuthErrorCode] || '',
+        message:
+          (errorMessages.auth[error.code as AuthErrorCode] as string) ||
+          (error.code as string),
       },
     };
+  if (!data.user) {
+    return {
+      formData: newFormData,
+      success: false,
+      user: null,
+      error: {
+        code: 'unexpected_failure',
+        message: errorMessages.auth['unexpected_failure'] as string,
+      },
+    };
+  }
 
-  redirect('/home');
-}
+  return {
+    formData: newFormData,
+    success: true,
+    user: {
+      id: data.user.id,
+      email: data.user.email,
+      username: data.user.user_metadata.username,
+      avatar_url: data.user.user_metadata.avatar_url,
+      provider: data.user.app_metadata.provider,
+      last_login_at: data.user.last_sign_in_at,
+    },
+    error: null,
+  };
+};

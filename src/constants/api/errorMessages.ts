@@ -1,4 +1,4 @@
-import { AuthErrorCode } from '@/types/api';
+import { AuthErrorCode } from '@/types/supabase';
 
 interface ErrorCodes {
   auth: Partial<Record<AuthErrorCode, string>>;

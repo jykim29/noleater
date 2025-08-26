@@ -13,25 +13,40 @@ import {
 } from '../common';
 import SNSLoginButton from './SNSLoginButton';
 import ErrorMessageBox from './ErrorMessageBox';
+import { useAuthStore } from '@/contexts';
 import { register } from '@/app/(auth)/register/actions';
+import { RegisterActionState } from '@/types/actionState.interfaces';
+
+const initialActionState: RegisterActionState = {
+  success: false,
+  user: null,
+  error: null,
+  formData: null,
+};
 
 export default function RegisterForm() {
-  const [state, registerAction, isPending] = useActionState(register, {});
+  const [state, registerAction, isPending] = useActionState<
+    RegisterActionState,
+    FormData
+  >(register, initialActionState);
   const router = useRouter();
+  const setUser = useAuthStore((state) => state.setUser);
 
   useEffect(() => {
-    if (state.success) {
+    if (state.success && state.user) {
+      setUser({ user: { ...state.user }, isLoggedIn: true });
       alert('회원가입이 완료되었습니다. 환영합니다!');
       router.push('/home');
     }
   }, [state]);
+
   return (
     <Overlay>
       <BottomSheet>
         <form className="flex flex-col gap-4">
           <fieldset className="flex flex-col gap-2">
             <legend className="sr-only">가입계정 정보</legend>
-            {state.success === false && (
+            {!state.success && state.error && (
               <ErrorMessageBox>❗ {state.error?.message}</ErrorMessageBox>
             )}
             <TextInput
@@ -43,7 +58,7 @@ export default function RegisterForm() {
               placeholder="example@noleater.dev"
               autoComplete="off"
               required
-              defaultValue={state.data?.email || ''}
+              defaultValue={state.formData?.email || ''}
             />
             <PasswordInput
               className="rounded-md"
@@ -52,7 +67,7 @@ export default function RegisterForm() {
               label="비밀번호"
               placeholder="대/소문자, 숫자, 특수문자 포함 8 ~ 20자"
               required
-              defaultValue={state.data?.password || ''}
+              defaultValue={state.formData?.password || ''}
             />
             <PasswordInput
               className="rounded-md"
@@ -61,7 +76,7 @@ export default function RegisterForm() {
               label="비밀번호 확인"
               placeholder="비밀번호를 다시 입력해주세요."
               required
-              defaultValue={state.data?.passwordConfirm || ''}
+              defaultValue={state.formData?.passwordConfirm || ''}
             />
           </fieldset>
 
@@ -71,7 +86,7 @@ export default function RegisterForm() {
               id="agreement"
               name="agreement"
               required
-              defaultChecked={state.data?.agreement}
+              defaultChecked={state.formData?.agreement}
             >
               회원가입 약관에 동의
             </Checkbox>

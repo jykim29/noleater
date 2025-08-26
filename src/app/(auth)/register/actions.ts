@@ -1,44 +1,21 @@
 'use server';
 
-import * as z from 'zod';
 import { errorMessages } from '@/constants/api';
 import { createClient } from '@/libs/supabase/server';
-import { AuthErrorCode } from '@/types/api';
+import { RegisterFormDataSchema } from '@/schemas';
+import { RegisterActionState } from '@/types/actionState.interfaces';
+import { AuthErrorCode } from '@/types/supabase';
+import { validateWithZod } from '@/utils';
 
-interface RegisterActionState {
-  data?: RegisterFormData;
-  success?: boolean;
-  error?: {
-    code: string;
-    message: string;
-  };
-}
-type RegisterFormData = z.infer<typeof RegisterFormDataSchema>;
-
-const RegisterFormDataSchema = z
-  .object({
-    email: z.email('invalid_email_pattern'),
-    password: z
-      .string()
-      .regex(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#.~_-])[A-Za-z\d@$!%*?&#.~_-]{8,20}$/,
-        'incorrect_password_pattern'
-      ),
-    passwordConfirm: z.string(),
-    agreement: z
-      .boolean()
-      .refine((val) => val === true, { error: 'not_checked_agreement' }),
-  })
-  .refine((data) => data.password === data.passwordConfirm, {
-    error: 'not_match_password',
-  });
-
-export async function register(
-  _prevState: RegisterActionState,
+type Register = (
+  prevState: RegisterActionState,
   formData: FormData
-): Promise<RegisterActionState> {
+) => Promise<RegisterActionState>;
+
+export const register: Register = async (_prevState, formData) => {
   const supabase = await createClient();
-  const newFormData: RegisterFormData = {
+
+  const newFormData = {
     email: formData.get('email') as string,
     password: formData.get('password') as string,
     passwordConfirm: formData.get('passwordConfirm') as string,
@@ -46,23 +23,23 @@ export async function register(
   };
 
   // form validation with zod
-  const result = RegisterFormDataSchema.safeParse(newFormData);
+  const result = validateWithZod(RegisterFormDataSchema, newFormData);
   // zoderror handling
   if (!result.success) {
     return {
-      data: newFormData,
       success: false,
       error: {
-        code: result.error.issues[0].message,
+        code: result.error.message,
         message:
-          errorMessages.auth[result.error.issues[0].message as AuthErrorCode] ||
-          '',
+          errorMessages.auth[result.error.message as AuthErrorCode] || '',
       },
+      formData: { ...newFormData },
+      user: null,
     };
   }
 
   // request signup to supabase auth
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email: newFormData.email,
     password: newFormData.password,
     options: {
@@ -72,20 +49,43 @@ export async function register(
       },
     },
   });
+
   // response error handling
   if (error)
     return {
-      data: newFormData,
+      formData: newFormData,
+      user: null,
       success: false,
       error: {
         code: error.code as string,
         message:
-          errorMessages.auth[error.code as AuthErrorCode] ||
+          (errorMessages.auth[error.code as AuthErrorCode] as string) ||
           (error.code as string),
       },
     };
 
+  if (!data.user) {
+    return {
+      formData: newFormData,
+      success: false,
+      user: null,
+      error: {
+        code: 'unexpected_failure',
+        message: errorMessages.auth['unexpected_failure'] as string,
+      },
+    };
+  }
   return {
+    formData: newFormData,
     success: true,
+    user: {
+      id: data.user.id,
+      email: data.user.email,
+      username: data.user.user_metadata.username,
+      avatar_url: data.user.user_metadata.avatar_url,
+      provider: data.user.app_metadata.provider,
+      last_login_at: data.user.last_sign_in_at,
+    },
+    error: null,
   };
-}
+};

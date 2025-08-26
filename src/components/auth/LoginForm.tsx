@@ -2,6 +2,7 @@
 
 import { useActionState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import {
   BottomSheet,
   Button,
@@ -12,18 +13,36 @@ import {
 import SNSLoginButton from './SNSLoginButton';
 import ErrorMessageBox from './ErrorMessageBox';
 import { login } from '@/app/(auth)/login/actions';
+import { useAuthStore } from '@/contexts';
+import { LoginActionState } from '@/types/actionState.interfaces';
+
+const initialActionState: LoginActionState = {
+  success: false,
+  user: null,
+  error: null,
+  formData: null,
+};
 
 export default function LoginForm() {
-  const [state, formAction, isPending] = useActionState(login, {});
+  const [state, formAction, isPending] = useActionState<
+    LoginActionState,
+    FormData
+  >(login, initialActionState);
+  const router = useRouter();
+  const setUser = useAuthStore((state) => state.setUser);
 
   useEffect(() => {
-    console.log(state);
+    if (state.success && state.user) {
+      setUser({ user: { ...state.user }, isLoggedIn: true });
+      router.push('/home');
+    }
   }, [state]);
+
   return (
     <Overlay>
       <BottomSheet>
         <form className="flex flex-col gap-4" action={formAction}>
-          {state.success === false && (
+          {!state.success && state.error && (
             <ErrorMessageBox>❗ {state.error?.message}</ErrorMessageBox>
           )}
           <TextInput
@@ -35,7 +54,7 @@ export default function LoginForm() {
             placeholder="example@noleater.dev"
             required
             autoComplete="off"
-            defaultValue={state.data?.email}
+            defaultValue={state.formData?.email}
           />
           <PasswordInput
             className="rounded-md"
@@ -44,7 +63,7 @@ export default function LoginForm() {
             label="비밀번호"
             placeholder="대/소문자, 숫자, 특수문자 포함 8 ~ 20자"
             required
-            defaultValue={state.data?.password}
+            defaultValue={state.formData?.password}
           />
           <Button type="submit" disabled={isPending}>
             {isPending ? '로그인 중' : '로그인'}

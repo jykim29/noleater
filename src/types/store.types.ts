@@ -3,11 +3,11 @@ export type AuthStore = AuthStoreState & AuthStoreActions;
 export interface AuthStoreState {
   user: {
     id: string;
-    email: string;
-    username: string;
-    avatar_url: string;
-    provider: string;
-    last_login_at: string;
+    email?: string;
+    username?: string;
+    avatar_url?: string;
+    provider?: string;
+    last_login_at?: string;
   } | null;
   isLoggedIn: boolean;
 }

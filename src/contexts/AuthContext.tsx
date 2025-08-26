@@ -1,8 +1,9 @@
 'use client';
 
-import { AuthStore, createAuthStore } from '@/stores';
-import { createContext, useContext, useRef } from 'react';
+import { createContext, useContext, useEffect, useRef } from 'react';
 import { useStore } from 'zustand';
+import { createAuthStore } from '@/stores';
+import { AuthStore, AuthStoreState } from '@/types';
 
 type AuthStoreApi = ReturnType<typeof createAuthStore>;
 
@@ -21,15 +22,16 @@ export const useAuthStore = <T,>(selectorFn: (store: AuthStore) => T): T => {
 };
 
 export function AuthContextProvider({
-  initialState,
+  initialValue: initialState,
   children,
 }: {
-  initialState?: any;
+  initialValue?: AuthStoreState;
   children: React.ReactNode;
 }) {
   const storeRef = useRef<AuthStoreApi | null>(null);
   if (storeRef.current === null) {
     storeRef.current = createAuthStore(initialState);
   }
+
   return <AuthContext value={storeRef.current}>{children}</AuthContext>;
 }

@@ -1,25 +1,25 @@
 import { createStore } from 'zustand';
+import { devtools } from 'zustand/middleware';
+import { AuthStore, AuthStoreState } from '@/types';
 
-interface AuthState {
-  user: {
-    [key: string]: any;
-  } | null;
-}
-interface AuthActions {
-  getUser: () => void;
-  setUser: (newState: Pick<AuthState, 'user'>) => void;
-}
-export type AuthStore = AuthState & AuthActions;
-
-const initialState = {
+const initialState: AuthStoreState = {
   user: null,
+  isLoggedIn: false,
 };
 
-export function createAuthStore(initState: AuthState = initialState) {
-  return createStore<AuthStore>()((set) => ({
-    ...initState,
-    getUser: () => set((state) => ({ ...state.user })),
-    setUser: (newState) =>
-      set((state) => ({ user: { ...state.user, ...newState } })),
-  }));
+export function createAuthStore(initState: AuthStoreState = initialState) {
+  return createStore<AuthStore>()(
+    devtools((set) => ({
+      ...initState,
+      getUser: () =>
+        set((state) => ({ user: state.user, isLoggedIn: state.isLoggedIn })),
+      setUser: (newState) =>
+        set((state) => ({
+          ...state,
+          user: newState.user,
+          isLoggedIn: newState.isLoggedIn,
+        })),
+      removeUser: () => set((state) => ({ ...state, ...initialState })),
+    }))
+  );
 }
