@@ -8,7 +8,7 @@ export default function MyProfilePage() {
     <>
       <Header
         right={{
-          href: '..',
+          href: '/profile/settings',
           src: '/assets/icons/gear.svg',
           alt: '설정',
         }}
