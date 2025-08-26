@@ -34,7 +34,6 @@ function VerticalMarquee({
     }, duration);
 
     return () => {
-      console.log('cleanup');
       clearInterval(timer);
     };
   }, [containerRef, duration, direction]);
