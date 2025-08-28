@@ -16,6 +16,7 @@ import ErrorMessageBox from './ErrorMessageBox';
 import { useAuthStore } from '@/contexts';
 import { register } from '@/app/(auth)/register/actions';
 import { RegisterActionState } from '@/types/actionState.interfaces';
+import { ROUTES } from '@/constants/routes';
 
 const initialActionState: RegisterActionState = {
   success: false,
@@ -43,7 +44,7 @@ export default function RegisterForm() {
   return (
     <Overlay>
       <BottomSheet>
-        <form className="flex flex-col gap-4">
+        <form className="flex flex-col gap-4" action={registerAction}>
           <fieldset className="flex flex-col gap-2">
             <legend className="sr-only">가입계정 정보</legend>
             {!state.success && state.error && (
@@ -58,7 +59,7 @@ export default function RegisterForm() {
               placeholder="example@noleater.dev"
               autoComplete="off"
               required
-              defaultValue={state.formData?.email || ''}
+              defaultValue={state.formData?.email ?? ''}
             />
             <PasswordInput
               className="rounded-md"
@@ -67,7 +68,8 @@ export default function RegisterForm() {
               label="비밀번호"
               placeholder="대/소문자, 숫자, 특수문자 포함 8 ~ 20자"
               required
-              defaultValue={state.formData?.password || ''}
+              defaultValue=""
+              autoComplete="new-password"
             />
             <PasswordInput
               className="rounded-md"
@@ -76,7 +78,8 @@ export default function RegisterForm() {
               label="비밀번호 확인"
               placeholder="비밀번호를 다시 입력해주세요."
               required
-              defaultValue={state.formData?.passwordConfirm || ''}
+              defaultValue=""
+              autoComplete="new-password"
             />
           </fieldset>
 
@@ -86,7 +89,7 @@ export default function RegisterForm() {
               id="agreement"
               name="agreement"
               required
-              defaultChecked={state.formData?.agreement}
+              defaultChecked={state.formData?.agreement || false}
             >
               회원가입 약관에 동의
             </Checkbox>
@@ -98,17 +101,13 @@ export default function RegisterForm() {
               약관 보기
             </button>
           </fieldset>
-          <Button
-            type="submit"
-            disabled={isPending}
-            formAction={registerAction}
-          >
+          <Button type="submit" disabled={isPending}>
             {isPending ? '처리중' : '회원가입'}
           </Button>
         </form>
         <div className="text-body-sm text-gray-60 my-2 flex items-center gap-2">
           <p>이미 놀잇터 회원이신가요?</p>
-          <Link className="text-positive underline" href="/login">
+          <Link className="text-positive underline" href={ROUTES.LOGIN}>
             로그인하기
           </Link>
         </div>

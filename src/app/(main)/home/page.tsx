@@ -6,12 +6,13 @@ import {
   QuickLink,
 } from '@/components/home';
 import { Content, Header } from '@/components/layout';
+import { ROUTES } from '@/constants/routes';
 
 export default async function Home() {
   return (
     <>
       <Header>
-        <NavLink href="/">
+        <NavLink href={ROUTES.HOME}>
           <h1 className="text-heading-2xl">놀잇터</h1>
         </NavLink>
       </Header>
@@ -32,7 +33,7 @@ export default async function Home() {
           <div className="flex h-16 items-center gap-2">
             <QuickLink
               className="w-full"
-              to="/community/myrecipe"
+              to={ROUTES.MY_RECIPE}
               image={{
                 src: '/assets/images/recipe_book.png',
                 alt: '나만의 레시피',
@@ -42,7 +43,7 @@ export default async function Home() {
             </QuickLink>
             <QuickLink
               className="w-full"
-              to="/community/freeboard"
+              to={ROUTES.FREEBOARD}
               image={{ src: '/assets/images/freeboard.png', alt: '자유게시판' }}
             >
               자유게시판

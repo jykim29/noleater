@@ -15,6 +15,7 @@ import ErrorMessageBox from './ErrorMessageBox';
 import { login } from '@/app/(auth)/login/actions';
 import { useAuthStore } from '@/contexts';
 import { LoginActionState } from '@/types/actionState.interfaces';
+import { ROUTES } from '@/constants/routes';
 
 const initialActionState: LoginActionState = {
   success: false,
@@ -71,7 +72,7 @@ export default function LoginForm() {
         </form>
         <div className="text-body-sm text-gray-60 my-2 flex items-center gap-2">
           <p>아직 회원이 아니신가요?</p>
-          <Link className="text-positive underline" href="/register">
+          <Link className="text-positive underline" href={ROUTES.REGISTER}>
             가입하기
           </Link>
         </div>

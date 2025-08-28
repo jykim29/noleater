@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import AnimatedBackground from '@/components/landing/AnimatedBackground';
+import { ROUTES } from '@/constants/routes';
 
 export default async function Landing() {
   return (
@@ -14,7 +15,7 @@ export default async function Landing() {
         />
         <Link
           className="border-primary-60 text-button-md bg-primary-gradient rounded-full border px-5 py-2 text-white pointer-fine:hover:brightness-95"
-          href="/login"
+          href={ROUTES.LOGIN}
         >
           입장하기
         </Link>
