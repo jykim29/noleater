@@ -33,7 +33,7 @@ export const register: Register = async (_prevState, formData) => {
         message:
           errorMessages.auth[result.error.message as AuthErrorCode] || '',
       },
-      formData: { ...newFormData },
+      formData: { ...newFormData, password: '', passwordConfirm: '' },
       user: null,
     };
   }
@@ -53,7 +53,7 @@ export const register: Register = async (_prevState, formData) => {
   // response error handling
   if (error)
     return {
-      formData: newFormData,
+      formData: { ...newFormData, password: '', passwordConfirm: '' },
       user: null,
       success: false,
       error: {
@@ -66,7 +66,7 @@ export const register: Register = async (_prevState, formData) => {
 
   if (!data.user) {
     return {
-      formData: newFormData,
+      formData: { ...newFormData, password: '', passwordConfirm: '' },
       success: false,
       user: null,
       error: {
@@ -76,7 +76,7 @@ export const register: Register = async (_prevState, formData) => {
     };
   }
   return {
-    formData: newFormData,
+    formData: null,
     success: true,
     user: {
       id: data.user.id,

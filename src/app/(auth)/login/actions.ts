@@ -44,7 +44,7 @@ export const login: Login = async (_prevState, formData) => {
   // response error handling
   if (error)
     return {
-      formData: newFormData,
+      formData: { ...newFormData, password: '' },
       user: null,
       success: false,
       error: {
@@ -56,7 +56,7 @@ export const login: Login = async (_prevState, formData) => {
     };
   if (!data.user) {
     return {
-      formData: newFormData,
+      formData: { ...newFormData, password: '' },
       success: false,
       user: null,
       error: {
@@ -67,7 +67,7 @@ export const login: Login = async (_prevState, formData) => {
   }
 
   return {
-    formData: newFormData,
+    formData: { ...newFormData, password: '' },
     success: true,
     user: {
       id: data.user.id,
