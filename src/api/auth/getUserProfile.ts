@@ -39,11 +39,11 @@ const getUserProfile: GetUserProfile = async () => {
     success: true,
     data: {
       id: data.user.id,
-      username: data.user.user_metadata.username,
+      username: data.user.user_metadata.username ?? '',
       email: data.user.email as string,
-      avatar_url: data.user.user_metadata.avatar_url,
-      provider: data.user.app_metadata.provider || '',
-      last_login_at: data.user.last_sign_in_at || '',
+      avatar_url: data.user.user_metadata.avatar_url ?? '',
+      provider: data.user.app_metadata.provider ?? '',
+      last_login_at: data.user.last_sign_in_at ?? '',
     },
   };
 };
