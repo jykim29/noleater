@@ -1,20 +1,20 @@
 'use client';
 
+import { useCallback } from 'react';
 import { Button } from '@/components/common';
 import { Content, Header } from '@/components/layout';
 import { createClient } from '@/libs/supabase/client';
 
 export default function SettingsPage() {
-  const supabase = createClient();
-
-  const handleClickSignOutButton = async () => {
+  const handleClickSignOutButton = useCallback(async () => {
+    const supabase = createClient();
     const { error } = await supabase.auth.signOut();
     if (!error) {
       alert('로그아웃 되었습니다. 초기 페이지로 이동합니다.');
       return (window.location.href = '/');
     }
     return alert('로그아웃 실패. 재시도 부탁');
-  };
+  }, []);
 
   return (
     <>
