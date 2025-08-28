@@ -9,10 +9,12 @@ const initialState: AuthStoreState = {
 
 export function createAuthStore(initState: AuthStoreState = initialState) {
   return createStore<AuthStore>()(
-    devtools((set) => ({
+    devtools((set, get) => ({
       ...initState,
-      getUser: () =>
-        set((state) => ({ user: state.user, isLoggedIn: state.isLoggedIn })),
+      getUser: () => {
+        const { user, isLoggedIn } = get();
+        return { user, isLoggedIn };
+      },
       setUser: (newState) =>
         set((state) => ({
           ...state,
