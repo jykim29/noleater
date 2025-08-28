@@ -4,7 +4,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 const publicPathList = ['/', '/login', '/register'];
 
 function isPublicPath(pathname: string) {
-  return publicPathList.some((item) => item.includes(pathname));
+  return publicPathList.includes(pathname);
 }
 
 export async function updateSession(request: NextRequest) {
