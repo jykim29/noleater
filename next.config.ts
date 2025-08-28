@@ -2,11 +2,18 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   /* config options here */
-  logging: {
-    fetches: {
-      fullUrl: true,
-    },
-  },
+  logging:
+    process.env.NODE_ENV === 'production'
+      ? {
+          fetches: {
+            fullUrl: false,
+          },
+        }
+      : {
+          fetches: {
+            fullUrl: true,
+          },
+        },
   turbopack: {
     rules: {
       '*.svg': {
