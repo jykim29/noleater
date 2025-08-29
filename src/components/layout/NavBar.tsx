@@ -1,11 +1,12 @@
 import Image from 'next/image';
 import NavLink from '../common/NavLink';
+import { ROUTES } from '@/constants/routes';
 
 export default function NavBar() {
   return (
     <nav className="relative flex h-full w-full items-end justify-between gap-3">
       <NavLink
-        href="/feeds"
+        href={ROUTES.FEEDS}
         activeClassName="bg-secondary-gradient"
         className="bg-light-gray-gradient border-secondary-60 flex w-full flex-col items-center justify-center gap-0.5 rounded-t-lg border-x-2 border-t-2"
       >
@@ -18,7 +19,7 @@ export default function NavBar() {
         <span className="text-caption-xs">피드</span>
       </NavLink>
       <NavLink
-        href="/mypage"
+        href={ROUTES.MY_PROFILE}
         activeClassName="bg-secondary-gradient"
         className="bg-light-gray-gradient border-secondary-60 flex w-full flex-col items-center justify-center gap-0.5 rounded-t-lg border-x-2 border-t-2"
       >

@@ -2,12 +2,12 @@
 
 import { createContext, useContext } from 'react';
 
-type MarqueeContextType = {
+type MarqueeContextValue = {
   width: string;
   height: string;
 };
 
-const MarqueeContext = createContext<MarqueeContextType | null>(null);
+const MarqueeContext = createContext<MarqueeContextValue | null>(null);
 
 export const useMarqueeContext = () => {
   const context = useContext(MarqueeContext);
@@ -23,6 +23,6 @@ export function MarqueeContextProvider({
   width,
   height,
   children,
-}: React.PropsWithChildren<MarqueeContextType>) {
+}: React.PropsWithChildren<MarqueeContextValue>) {
   return <MarqueeContext value={{ width, height }}>{children}</MarqueeContext>;
 }

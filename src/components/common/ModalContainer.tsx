@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback } from 'react';
-import { useModalContext } from '@/contexts/ModalContext';
+import { useModalContext } from '@/contexts';
 import Overlay from './Overlay';
 import Portal from './Portal';
 

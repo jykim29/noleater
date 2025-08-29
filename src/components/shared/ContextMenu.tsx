@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react';
 import { Button } from '../common';
-import { useModalContext } from '@/contexts/ModalContext';
+import { useModalContext } from '@/contexts';
 
 type Menu = 'modify' | 'delete' | 'report';
 

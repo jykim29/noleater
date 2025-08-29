@@ -1,3 +1,7 @@
+'use client';
+
+import { useActionState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
   BottomSheet,
@@ -8,27 +12,63 @@ import {
   TextInput,
 } from '../common';
 import SNSLoginButton from './SNSLoginButton';
+import ErrorMessageBox from './ErrorMessageBox';
+import { useAuthStore } from '@/contexts';
+import { register } from '@/app/(auth)/register/actions';
+import { RegisterActionState } from '@/types/actionState.interfaces';
+import { ROUTES } from '@/constants/routes';
+
+const initialActionState: RegisterActionState = {
+  success: false,
+  user: null,
+  error: null,
+  formData: null,
+};
 
 export default function RegisterForm() {
+  const [state, registerAction, isPending] = useActionState<
+    RegisterActionState,
+    FormData
+  >(register, initialActionState);
+  const router = useRouter();
+  const setUser = useAuthStore((state) => state.setUser);
+
+  useEffect(() => {
+    if (state.success && state.user) {
+      setUser({ user: { ...state.user }, isLoggedIn: true });
+      alert('회원가입이 완료되었습니다. 환영합니다!');
+      router.push('/home');
+    }
+  }, [state]);
+
   return (
     <Overlay>
       <BottomSheet>
-        <form className="flex flex-col gap-4" action="">
+        <form className="flex flex-col gap-4" action={registerAction}>
           <fieldset className="flex flex-col gap-2">
             <legend className="sr-only">가입계정 정보</legend>
+            {!state.success && state.error && (
+              <ErrorMessageBox>❗ {state.error?.message}</ErrorMessageBox>
+            )}
             <TextInput
               className="rounded-md"
+              type="email"
               id="email"
               name="email"
               label="이메일 주소"
               placeholder="example@noleater.dev"
+              autoComplete="off"
+              required
+              defaultValue={state.formData?.email ?? ''}
             />
             <PasswordInput
               className="rounded-md"
               id="password"
               name="password"
               label="비밀번호"
-              placeholder="8-20자 이내"
+              placeholder="대/소문자, 숫자, 특수문자 포함 8 ~ 20자"
+              required
+              autoComplete="new-password"
             />
             <PasswordInput
               className="rounded-md"
@@ -36,26 +76,36 @@ export default function RegisterForm() {
               name="passwordConfirm"
               label="비밀번호 확인"
               placeholder="비밀번호를 다시 입력해주세요."
+              required
+              autoComplete="new-password"
             />
           </fieldset>
 
           <fieldset className="flex items-center gap-3">
             <legend className="sr-only">약관 동의</legend>
-            <Checkbox id="agreement" name="agreement">
+            <Checkbox
+              id="agreement"
+              name="agreement"
+              required
+              defaultChecked={state.formData?.agreement || false}
+            >
               회원가입 약관에 동의
             </Checkbox>
             <button
               className="text-body-sm text-positive underline"
               type="button"
+              tabIndex={-1}
             >
               약관 보기
             </button>
           </fieldset>
-          <Button type="submit">회원가입</Button>
+          <Button type="submit" disabled={isPending}>
+            {isPending ? '처리중' : '회원가입'}
+          </Button>
         </form>
         <div className="text-body-sm text-gray-60 my-2 flex items-center gap-2">
           <p>이미 놀잇터 회원이신가요?</p>
-          <Link className="text-positive underline" href="/login">
+          <Link className="text-positive underline" href={ROUTES.LOGIN}>
             로그인하기
           </Link>
         </div>

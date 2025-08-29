@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import FeedItem from './FeedItem';
 import { Button, GridItem } from '../common';
-import { useModalContext } from '@/contexts/ModalContext';
+import { useModalContext } from '@/contexts';
 
 interface FeedGridItemProps {
   id: number;

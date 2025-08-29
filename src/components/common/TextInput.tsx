@@ -3,6 +3,7 @@ import { twMerge } from 'tailwind-merge';
 interface InputProps extends React.ComponentPropsWithoutRef<'input'> {
   label?: string;
   id: string;
+  type?: 'text' | 'email' | 'number' | 'search' | 'tel';
   name: string;
   className?: string;
 }
@@ -10,6 +11,7 @@ interface InputProps extends React.ComponentPropsWithoutRef<'input'> {
 export default function TextInput({
   label,
   id,
+  type: inputType = 'text',
   name,
   className: newClassName = '',
   ...rest
@@ -25,7 +27,7 @@ export default function TextInput({
           label && 'mt-[26px]',
           newClassName
         )}
-        type="text"
+        type={inputType}
         id={id}
         name={name}
         {...rest}

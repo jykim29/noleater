@@ -1,6 +1,6 @@
 'use client';
 
-import { useMarqueeContext } from '@/contexts/MarqueeContext';
+import { useMarqueeContext } from '@/contexts';
 
 export default function MarqueeItem({ children }: React.PropsWithChildren) {
   const { width, height } = useMarqueeContext();

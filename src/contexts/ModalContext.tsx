@@ -10,7 +10,7 @@ import {
 import { BottomSheet, CenterModal, ModalContainer } from '@/components/common';
 import { el } from '@/utils';
 
-interface ModalContextType {
+interface ModalContextValue {
   isHidden: boolean;
   setIsHidden: React.Dispatch<React.SetStateAction<boolean>>;
   open: {
@@ -21,7 +21,7 @@ interface ModalContextType {
   node?: React.ReactNode;
 }
 
-const ModalContext = createContext<ModalContextType | null>(null);
+const ModalContext = createContext<ModalContextValue | null>(null);
 
 export const useModalContext = () => {
   const context = useContext(ModalContext);
