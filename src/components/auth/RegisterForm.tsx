@@ -68,7 +68,6 @@ export default function RegisterForm() {
               label="비밀번호"
               placeholder="대/소문자, 숫자, 특수문자 포함 8 ~ 20자"
               required
-              defaultValue=""
               autoComplete="new-password"
             />
             <PasswordInput
@@ -78,7 +77,6 @@ export default function RegisterForm() {
               label="비밀번호 확인"
               placeholder="비밀번호를 다시 입력해주세요."
               required
-              defaultValue=""
               autoComplete="new-password"
             />
           </fieldset>

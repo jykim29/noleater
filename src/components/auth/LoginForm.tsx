@@ -64,7 +64,7 @@ export default function LoginForm() {
             label="비밀번호"
             placeholder="대/소문자, 숫자, 특수문자 포함 8 ~ 20자"
             required
-            defaultValue={state.formData?.password}
+            autoComplete="current-password"
           />
           <Button type="submit" disabled={isPending}>
             {isPending ? '로그인 중' : '로그인'}
