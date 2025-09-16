@@ -1,6 +1,6 @@
 import { twMerge } from 'tailwind-merge';
 
-interface InputProps extends React.ComponentPropsWithoutRef<'input'> {
+interface InputProps extends React.ComponentPropsWithRef<'input'> {
   label?: string;
   id: string;
   type?: 'text' | 'email' | 'number' | 'search' | 'tel';
