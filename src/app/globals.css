@@ -141,8 +141,10 @@ button:not([disabled]):active,
   filter: brightness(0.9);
 }
 
+.mobile-width {
+  @apply max-w-md min-w-xs;
+}
+
 /* TODO 
 1. @layer components에 badge, btn 커스텀 스타일 넣기
-2. @layer components에 embla-carousel 커스텀 클래스 넣기 
-3. gradient 스타일 커스터마이즈 방법에 대해 고뇌해보기
 */
