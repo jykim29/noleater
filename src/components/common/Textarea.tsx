@@ -25,6 +25,7 @@ export default function Textarea({
         )}
         name={name}
         id={id}
+        spellCheck={false}
         {...rest}
       >
         {children}

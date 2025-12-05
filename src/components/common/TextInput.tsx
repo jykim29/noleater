@@ -30,6 +30,7 @@ export default function TextInput({
         type={inputType}
         id={id}
         name={name}
+        spellCheck={false}
         {...rest}
       />
       {label && (
