@@ -5,7 +5,7 @@ import {} from '@supabase/supabase-js';
 const uploadFile = async (
   supabaseClient: SupabaseClient,
   bucketName: string,
-  boardType: 'feeds' | 'freeboard' | 'myrecipe' | 'discussion',
+  boardType: 'feeds' | 'notice' | 'free' | 'recipe' | 'discuss',
   file: File
 ) => {
   const imageBasePath = `${boardType}/${format(new Date(), 'yyMMdd')}`;

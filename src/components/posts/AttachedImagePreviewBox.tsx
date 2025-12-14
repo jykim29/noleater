@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { twMerge } from 'tailwind-merge';
 
 interface AttachedImagePreviewBoxProps {
   image: {
@@ -8,15 +9,22 @@ interface AttachedImagePreviewBoxProps {
     alt?: string;
     id: string;
   };
+  className?: string;
   onDelete: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 export default function AttachedImagePreviewBox({
   image: { src, alt, id },
+  className: newClassNamme,
   onDelete: handleClick,
 }: AttachedImagePreviewBoxProps) {
   return (
-    <div className="border-gray-40 bg-gray-20 relative box-border h-20 w-20 rounded-2xl border-2">
+    <div
+      className={twMerge(
+        'border-gray-40 bg-gray-20 relative box-border h-20 w-20 rounded-2xl border-2',
+        newClassNamme
+      )}
+    >
       <Image
         className="cursor-pointer rounded-2xl object-cover pointer-fine:hover:brightness-110"
         src={src}
