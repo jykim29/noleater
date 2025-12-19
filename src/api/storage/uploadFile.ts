@@ -1,6 +1,5 @@
 import { format } from 'date-fns';
 import { SupabaseClient } from '@supabase/supabase-js';
-import {} from '@supabase/supabase-js';
 
 const uploadFile = async (
   supabaseClient: SupabaseClient,

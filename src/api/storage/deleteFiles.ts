@@ -5,8 +5,7 @@ const deleteFiles = async (
   bucketName: string,
   paths: string[] | string
 ) => {
-  const list = [paths].flatMap((path) => path);
-  console.log('지울경로 리스트', list);
+  const list = Array.isArray(paths) ? paths : [paths];
   const { data, error } = await supabaseClient.storage
     .from(bucketName)
     .remove(list);

@@ -58,10 +58,10 @@ export default function useAttachFiles({
   };
 
   const addFile: AddFile = (fileList: FileList) => {
-    const originalFiles = fileInfoList.map((item) => item.file);
-    const validatedFiles = validateFiles(fileList);
     if (inputRef.current === null)
       return { success: false, message: '요소를 찾을 수 없습니다.' };
+    const originalFiles = fileInfoList.map((item) => item.file);
+    const validatedFiles = validateFiles(fileList);
     if (!validatedFiles) {
       console.log(validatedFiles);
       syncInputFiles(inputRef.current, originalFiles);
@@ -71,14 +71,11 @@ export default function useAttachFiles({
       };
     }
 
-    const validatedFileInfoList = validatedFiles.map((file) => {
-      const url = URL.createObjectURL(file);
-      return {
-        id: crypto.randomUUID(),
-        file,
-        previewURL: url,
-      };
-    });
+    const validatedFileInfoList = validatedFiles.map((file) => ({
+      id: crypto.randomUUID(),
+      file,
+      previewURL: URL.createObjectURL(file),
+    }));
     setFileInfoList((prev) => [...prev, ...validatedFileInfoList]);
     syncInputFiles(inputRef.current, [
       ...originalFiles,
@@ -90,23 +87,22 @@ export default function useAttachFiles({
   const removeFile = (fileId: string) => {
     if (inputRef.current === null)
       return { success: false, message: '요소를 찾을 수 없습니다.' };
-    const filterdList = [...fileInfoList].filter((v) => v.id !== fileId);
-    setFileInfoList(filterdList);
-    const dt = new DataTransfer();
-    filterdList.forEach((item) => dt.items.add(item.file));
-    inputRef.current.files = dt.files;
+    const filteredList = [...fileInfoList].filter((v) => v.id !== fileId);
+    setFileInfoList(filteredList);
+    syncInputFiles(
+      inputRef.current,
+      filteredList.map((item) => item.file)
+    );
+    const fileURL = [...fileInfoList].find(
+      (file) => file.id === fileId
+    )?.previewURL;
+    if (fileURL) URL.revokeObjectURL(fileURL);
     return { success: true, message: '' };
   };
 
   const resetFile = () => {
     setFileInfoList([]);
   };
-
-  useEffect(() => {
-    return () => {
-      fileInfoList.forEach((item) => URL.revokeObjectURL(item.previewURL));
-    };
-  }, []);
 
   return { fileInfoList, addFile, removeFile, resetFile, ref: inputRef };
 }

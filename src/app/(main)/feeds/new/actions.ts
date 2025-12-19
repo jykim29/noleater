@@ -93,7 +93,7 @@ export const uploadFeed: UploadFeed = async (_prevState, formData) => {
   );
   // 트랜잭션 에러 시, 스토리지 파일 삭제
   if (transactionError) {
-    await deleteFiles(supabase, 'user-images', imagePathList);
+    await deleteFiles(supabase, 'user_images', imagePathList);
     return {
       success: false,
       error: {

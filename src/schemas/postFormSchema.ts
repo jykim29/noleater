@@ -21,7 +21,7 @@ export const PostFormDataSchema = z.object({
   category: z.string(),
   title: z
     .string()
-    .min(1, '내용을 입력해주세요.')
+    .min(1, '제목을 입력해주세요.')
     .max(30, '30자 이내로 작성해주세요.'),
   content: z
     .string()

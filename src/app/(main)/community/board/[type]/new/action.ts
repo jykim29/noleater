@@ -6,7 +6,7 @@ import uploadFile from '@/api/storage/uploadFile';
 import { createClient } from '@/libs/supabase/server';
 import { getFileSchema, PostFormDataSchema } from '@/schemas';
 import { PostFormData, UploadPostActionState } from '@/types';
-import { Database } from '../../../../../../database.types';
+import { Database } from '../../../../../../../database.types';
 
 type UploadPost = (
   prevState: UploadPostActionState,
@@ -96,7 +96,7 @@ export const uploadPost: UploadPost = async (_prevState, formData) => {
   );
   // 트랜잭션 에러 시, 스토리지 파일 삭제
   if (transactionError) {
-    if (hasImage) await deleteFiles(supabase, 'user-images', imagePathList);
+    if (hasImage) await deleteFiles(supabase, 'user_images', imagePathList);
     return {
       success: false,
       error: {
