@@ -15,14 +15,14 @@ interface AttachedImagePreviewBoxProps {
 
 export default function AttachedImagePreviewBox({
   image: { src, alt, id },
-  className: newClassNamme,
+  className: newClassName,
   onDelete: handleClick,
 }: AttachedImagePreviewBoxProps) {
   return (
     <div
       className={twMerge(
         'border-gray-40 bg-gray-20 relative box-border h-20 w-20 rounded-2xl border-2',
-        newClassNamme
+        newClassName
       )}
     >
       <Image
