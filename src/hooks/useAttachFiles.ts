@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { getFileListSchema, getFileSchema } from '@/schemas';
 import { util } from 'zod/v4/core';
 
@@ -63,7 +63,6 @@ export default function useAttachFiles({
     const originalFiles = fileInfoList.map((item) => item.file);
     const validatedFiles = validateFiles(fileList);
     if (!validatedFiles) {
-      console.log(validatedFiles);
       syncInputFiles(inputRef.current, originalFiles);
       return {
         success: false,
