@@ -2,7 +2,7 @@
 
 import { redirect } from 'next/navigation';
 import deleteFiles from '@/api/storage/deleteFiles';
-import uploadFile from '@/api/storage/uploadFile';
+import { uploadFile, uploadFiles } from '@/api/storage/uploadFile';
 import { createClient } from '@/libs/supabase/server';
 import { getFileSchema, PostFormDataSchema } from '@/schemas';
 import { PostFormData, UploadPostActionState } from '@/types';
@@ -24,7 +24,7 @@ export const uploadPost: UploadPost = async (_prevState, formData) => {
     ),
   };
   const hasImage = postFormData.files.length > 0;
-  const imagePathList: string[] = [];
+  let imagePathList: string[] = [];
   const supabase = await createClient();
 
   // 1. zod 검증 - 폼데이터
@@ -56,28 +56,23 @@ export const uploadPost: UploadPost = async (_prevState, formData) => {
         };
       }
     }
-    // 3. 스토리지 파일 업로드
-    for (const file of postFormData.files) {
-      const { data: storageResponseData, error: storageResponseError } =
-        await uploadFile(supabase, 'user_images', postFormData.type, file);
-      // 스토리지 업로드 에러 핸들링
-      if (storageResponseError) {
-        console.log('스토리지 파일 업로드 에러', storageResponseError);
-        // 이미 업로드 된 파일 삭제
-        if (imagePathList.length > 0)
-          await deleteFiles(supabase, 'user_images', imagePathList);
-        return {
-          success: false,
-          error: {
-            code: storageResponseError.name,
-            message: storageResponseError.message,
-          },
-          formData: postFormData,
-        };
-      }
-      console.log('스토리지 업로드 성공 데이터', storageResponseData);
-      storageResponseData && imagePathList.push(storageResponseData.path);
-    }
+    // 3. 스토리지 다중 파일 업로드
+    const { pathList, error: storageResponseError } = await uploadFiles(
+      supabase,
+      'user_images',
+      'feeds',
+      postFormData.files
+    );
+    imagePathList = pathList;
+    if (storageResponseError)
+      return {
+        success: false,
+        error: {
+          code: storageResponseError.code,
+          message: storageResponseError.message,
+        },
+        formData: postFormData,
+      };
   }
 
   // 4. 포스트, 포스트이미지 데이터 삽입 트랜잭션 수행

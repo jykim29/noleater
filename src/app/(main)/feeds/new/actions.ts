@@ -3,7 +3,7 @@
 import { redirect } from 'next/navigation';
 import { createClient } from '@/libs/supabase/server';
 import { UploadFeedActionState } from '@/types/actionState.interfaces';
-import uploadFile from '@/api/storage/uploadFile';
+import { uploadFile, uploadFiles } from '@/api/storage/uploadFile';
 import { FeedFormDataSchema, getFileSchema } from '@/schemas';
 import { Database } from '../../../../../database.types';
 import deleteFiles from '@/api/storage/deleteFiles';
@@ -21,15 +21,18 @@ export const uploadFeed: UploadFeed = async (_prevState, formData) => {
     description: formData.get('description') as string,
     tags: formData.get('tags') as string,
   };
-  const imagePathList: string[] = [];
   const supabase = await createClient();
 
   // 1. zod 검증 - 폼데이터
-  const { success, error } = FeedFormDataSchema.safeParse(feedFormData);
+  const { success, error: formDataValidationError } =
+    FeedFormDataSchema.safeParse(feedFormData);
   if (!success) {
     return {
       success: false,
-      error: { code: error.name, message: error.issues[0].message },
+      error: {
+        code: formDataValidationError.name,
+        message: formDataValidationError.issues[0].message,
+      },
       formData: feedFormData,
     };
   }
@@ -49,34 +52,28 @@ export const uploadFeed: UploadFeed = async (_prevState, formData) => {
     }
   }
 
-  // 3. 스토리지 파일 업로드
-  for (const file of feedFormData.files) {
-    const { data: storageResponseData, error: storageResponseError } =
-      await uploadFile(supabase, 'user_images', 'feeds', file);
-    // 스토리지 업로드 에러 핸들링
-    if (storageResponseError) {
-      console.log('스토리지 파일 업로드 에러', storageResponseError);
-      // 이미 업로드 된 파일 삭제
-      if (imagePathList.length > 0)
-        await deleteFiles(supabase, 'user_images', imagePathList);
-      return {
-        success: false,
-        error: {
-          code: storageResponseError.name,
-          message: storageResponseError.message,
-        },
-        formData: feedFormData,
-      };
-    }
-    console.log('스토리지 업로드 성공 데이터', storageResponseData);
-    storageResponseData && imagePathList.push(storageResponseData.path);
-  }
+  // 3. 스토리지 다중 파일 업로드
+  const { pathList, error: storageResponseError } = await uploadFiles(
+    supabase,
+    'user_images',
+    'feeds',
+    feedFormData.files
+  );
+  if (storageResponseError)
+    return {
+      success: false,
+      error: {
+        code: storageResponseError.code,
+        message: storageResponseError.message,
+      },
+      formData: feedFormData,
+    };
 
   // 4. 피드, 피드이미지 데이터 삽입 트랜잭션 수행
   const transactionData: Database['public']['Functions']['insert_feed_and_images']['Args'] =
     {
       _content: feedFormData.description,
-      _image_urls: imagePathList,
+      _image_urls: pathList,
       _tags: feedFormData.tags
         ? feedFormData.tags
             .toString()
@@ -85,7 +82,7 @@ export const uploadFeed: UploadFeed = async (_prevState, formData) => {
             .filter((tag) => tag.length > 0)
             .map((tag) => '#' + tag)
         : [],
-      _image_count: imagePathList.length,
+      _image_count: pathList.length,
     };
   const { error: transactionError } = await supabase.rpc(
     'insert_feed_and_images',
@@ -93,7 +90,7 @@ export const uploadFeed: UploadFeed = async (_prevState, formData) => {
   );
   // 트랜잭션 에러 시, 스토리지 파일 삭제
   if (transactionError) {
-    await deleteFiles(supabase, 'user_images', imagePathList);
+    await deleteFiles(supabase, 'user_images', pathList);
     return {
       success: false,
       error: {
