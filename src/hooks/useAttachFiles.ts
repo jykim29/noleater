@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useRef, useState } from 'react';
+import { getFileListSchema, getFileSchema } from '@/schemas';
+import { util } from 'zod/v4/core';
 
-type AttachFile = {
+type FileInfo = {
   id: string;
   file: File;
   previewURL: string;
@@ -9,59 +11,97 @@ type AttachFile = {
 interface UseAttachFilesOptions {
   maxFileCount?: number;
   maxSize?: number;
-  strictFileType?: string[];
+  mimetype?: util.MimeTypes[];
 }
 
-type AddFileFn = (file: File) => {
-  result?: 'maxCount' | 'sizeOver' | 'fileType' | 'notFile' | 'success';
-  message?: string;
+type AddFile = (fileList: FileList) => {
+  success: boolean;
+  message: string;
 };
 
 export default function useAttachFiles({
-  maxFileCount,
-  maxSize,
-  strictFileType,
+  maxFileCount = 1,
+  maxSize = 3 * 1024 * 1024,
+  mimetype = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'],
 }: UseAttachFilesOptions = {}) {
-  const [fileList, setFileList] = useState<AttachFile[]>([]);
+  const [fileInfoList, setFileInfoList] = useState<FileInfo[]>([]);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const addFile: AddFileFn = (file: File) => {
-    if (!file)
-      return { result: 'notFile', message: '정상적인 파일이 아닙니다.' };
-    if (maxFileCount && fileList.length + 1 > maxFileCount)
-      return {
-        result: 'maxCount',
-        message: '첨부 파일 개수가 최대치에 도달했습니다.',
-      };
-    if (maxSize && file.size > maxSize)
-      return {
-        result: 'sizeOver',
-        message: '파일이 첨부 가능한 용량을 초과하였습니다.',
-      };
-    if (strictFileType && !strictFileType.includes(file.type.split('/')[1]))
-      return { result: 'fileType', message: '허용되지 않는 파일확장자입니다.' };
-
-    console.log(file);
-    setFileList((prev) => [
-      ...prev,
-      {
-        id: file.lastModified.toString(),
-        file,
-        previewURL: URL.createObjectURL(file),
-      },
+  const validateFiles = (fileList: FileList) => {
+    let newFiles = [...fileList];
+    const originalFiles = [...fileInfoList].map((item) => item.file);
+    const totalFileCount = fileInfoList.length + newFiles.length;
+    // 파일리스트 zod 검증
+    const FileListSchema = getFileListSchema(maxFileCount);
+    const { success } = FileListSchema.safeParse([
+      ...originalFiles,
+      ...newFiles,
     ]);
-    return { result: 'success' };
+    if (!success) {
+      const gap = totalFileCount - maxFileCount;
+      newFiles = newFiles.slice(0, -gap);
+    }
+    // 각 파일에 대한 zod 검증
+    newFiles = newFiles.filter(
+      (file) => getFileSchema(maxSize, mimetype).safeParse(file).success
+    );
+    return newFiles.length > 0 ? newFiles : null;
+  };
+
+  const syncInputFiles = (
+    targetElement: HTMLInputElement,
+    totalFiles: File[]
+  ) => {
+    const dt = new DataTransfer();
+    totalFiles.forEach((file) => dt.items.add(file));
+    targetElement.files = dt.files;
+  };
+
+  const addFile: AddFile = (fileList: FileList) => {
+    if (inputRef.current === null)
+      return { success: false, message: '요소를 찾을 수 없습니다.' };
+    const originalFiles = fileInfoList.map((item) => item.file);
+    const validatedFiles = validateFiles(fileList);
+    if (!validatedFiles) {
+      syncInputFiles(inputRef.current, originalFiles);
+      return {
+        success: false,
+        message: '첨부가능한 파일 개수를 초과했거나 용량이 너무 큽니다.',
+      };
+    }
+
+    const validatedFileInfoList = validatedFiles.map((file) => ({
+      id: crypto.randomUUID(),
+      file,
+      previewURL: URL.createObjectURL(file),
+    }));
+    setFileInfoList((prev) => [...prev, ...validatedFileInfoList]);
+    syncInputFiles(inputRef.current, [
+      ...originalFiles,
+      ...validatedFileInfoList.map((item) => item.file),
+    ]);
+    return { success: true, message: '' };
   };
 
   const removeFile = (fileId: string) => {
-    const filterdList = [...fileList].filter((v) => v.id !== fileId);
-    setFileList(filterdList);
+    if (inputRef.current === null)
+      return { success: false, message: '요소를 찾을 수 없습니다.' };
+    const filteredList = [...fileInfoList].filter((v) => v.id !== fileId);
+    setFileInfoList(filteredList);
+    syncInputFiles(
+      inputRef.current,
+      filteredList.map((item) => item.file)
+    );
+    const fileURL = [...fileInfoList].find(
+      (file) => file.id === fileId
+    )?.previewURL;
+    if (fileURL) URL.revokeObjectURL(fileURL);
+    return { success: true, message: '' };
   };
 
-  useEffect(() => {
-    return () => {
-      fileList.forEach((v) => URL.revokeObjectURL(v.previewURL));
-    };
-  }, [fileList]);
+  const resetFile = () => {
+    setFileInfoList([]);
+  };
 
-  return { fileList, addFile, removeFile };
+  return { fileInfoList, addFile, removeFile, resetFile, ref: inputRef };
 }

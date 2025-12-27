@@ -9,7 +9,7 @@ export default function Footer() {
   return (
     <footer
       className={twMerge(
-        'fixed bottom-0 left-1/2 h-16 w-full max-w-md min-w-xs -translate-x-1/2 transition-all duration-500',
+        'mobile-width fixed bottom-0 left-1/2 h-16 w-full -translate-x-1/2 transition-all duration-500',
         isHidden && '-bottom-[64px]'
       )}
     >

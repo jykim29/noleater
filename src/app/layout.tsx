@@ -28,7 +28,7 @@ export default async function RootLayout({
       <body
         className={`${notoSansKR.className} bg-gray-40 min-h-dvh w-full antialiased`}
       >
-        <div className="relative mx-auto min-h-dvh w-full max-w-md min-w-xs bg-white">
+        <div className="mobile-width relative mx-auto min-h-dvh w-full bg-white">
           <AuthContextProvider initialValue={initialValue}>
             <ModalContextProvider>{children}</ModalContextProvider>
           </AuthContextProvider>

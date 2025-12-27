@@ -1,6 +1,6 @@
 import { twMerge } from 'tailwind-merge';
 
-interface FileInputProps extends React.ComponentPropsWithoutRef<'input'> {
+interface FileInputProps extends React.ComponentPropsWithRef<'input'> {
   id: string;
   name: string;
   className?: string;
