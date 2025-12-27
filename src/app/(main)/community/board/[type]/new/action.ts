@@ -60,8 +60,9 @@ export const uploadPost: UploadPost = async (_prevState, formData) => {
     const { pathList, error: storageResponseError } = await uploadFiles(
       supabase,
       'user_images',
-      'feeds',
-      postFormData.files
+      postFormData.type,
+      postFormData.files,
+      { rollbackOnFailure: true }
     );
     imagePathList = pathList;
     if (storageResponseError)
