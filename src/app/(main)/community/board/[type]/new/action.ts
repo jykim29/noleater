@@ -2,10 +2,10 @@
 
 import { redirect } from 'next/navigation';
 import deleteFiles from '@/api/storage/deleteFiles';
-import { uploadFile, uploadFiles } from '@/api/storage/uploadFile';
+import { uploadFiles } from '@/api/storage/uploadFile';
 import { createClient } from '@/libs/supabase/server';
 import { getFileSchema, PostFormDataSchema } from '@/schemas';
-import { PostFormData, UploadPostActionState } from '@/types';
+import { UploadPostActionState } from '@/types';
 import { Database } from '../../../../../../../database.types';
 
 type UploadPost = (
@@ -15,8 +15,9 @@ type UploadPost = (
 
 export const uploadPost: UploadPost = async (_prevState, formData) => {
   const postFormData = {
-    type: formData.get('bname') as PostFormData['type'],
-    category: formData.get('category') as string,
+    boardId: formData.get('bid') as string,
+    boardName: formData.get('bname') as string,
+    categoryId: formData.get('category') as string,
     title: formData.get('title') as string,
     content: formData.get('content') as string,
     files: (Array.from(formData.getAll('image')) as File[]).filter(
@@ -60,7 +61,7 @@ export const uploadPost: UploadPost = async (_prevState, formData) => {
     const { pathList, error: storageResponseError } = await uploadFiles(
       supabase,
       'user_images',
-      postFormData.type,
+      postFormData.boardName,
       postFormData.files,
       { rollbackOnFailure: true }
     );
@@ -79,8 +80,8 @@ export const uploadPost: UploadPost = async (_prevState, formData) => {
   // 4. 포스트, 포스트이미지 데이터 삽입 트랜잭션 수행
   const transactionData: Database['public']['Functions']['insert_post_and_images']['Args'] =
     {
-      _type: postFormData.type,
-      _category: postFormData.category,
+      _board_id: postFormData.boardId,
+      _category_id: postFormData.categoryId,
       _title: postFormData.title,
       _content: postFormData.content,
       _image_urls: imagePathList,
@@ -92,6 +93,7 @@ export const uploadPost: UploadPost = async (_prevState, formData) => {
   );
   // 트랜잭션 에러 시, 스토리지 파일 삭제
   if (transactionError) {
+    console.log(transactionError);
     if (hasImage) await deleteFiles(supabase, 'user_images', imagePathList);
     return {
       success: false,
@@ -104,5 +106,5 @@ export const uploadPost: UploadPost = async (_prevState, formData) => {
   }
 
   // 모든 과정 성공 시, 상위 페이지로 리다이렉트
-  redirect(`/community/board?type=${postFormData.type}`);
+  redirect(`/community/board/${postFormData.boardName}`);
 };

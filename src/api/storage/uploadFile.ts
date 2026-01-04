@@ -1,12 +1,11 @@
 import { SupabaseClient } from '@supabase/supabase-js';
 import { format } from 'date-fns';
 import deleteFiles from './deleteFiles';
-import { BoardType } from '@/types/query.types';
 
 export const uploadFile = async (
   supabaseClient: SupabaseClient,
   bucketName: string,
-  boardType: BoardType | 'feeds',
+  boardType: string,
   file: File
 ) => {
   const imageBasePath = `${boardType}/${format(new Date(), 'yyMMdd')}`;
@@ -25,7 +24,7 @@ export const uploadFile = async (
 export const uploadFiles = async (
   supabaseClient: SupabaseClient,
   bucketName: string,
-  boardType: BoardType | 'feeds',
+  boardType: string,
   files: File[],
   options?: { rollbackOnFailure?: boolean }
 ) => {

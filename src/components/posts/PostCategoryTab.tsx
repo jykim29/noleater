@@ -4,7 +4,7 @@ import { twMerge } from 'tailwind-merge';
 import { TabButton, TabList } from '../common';
 
 interface BoardCategoryTabProps {
-  tabData: { id: string; label: string }[];
+  tabData: { name: string; slug: string; order: number }[];
 }
 const stateVariants = {
   common: 'text-caption-xs! rounded-full  border px-2 py-1.5 text-black',
@@ -14,16 +14,17 @@ const stateVariants = {
 };
 
 export default function PostCategoryTab({ tabData }: BoardCategoryTabProps) {
+  const sortedTabData = tabData.sort((a, b) => a.order - b.order);
   return (
     <TabList
       onSelect={() => {}}
       ariaLabel="자유게시판 카테고리 탭"
       activeClassName={stateVariants.active}
     >
-      {tabData.map(({ id, label }, idx) => (
+      {sortedTabData.map(({ name, slug }, idx) => (
         <TabButton
-          key={id}
-          tabId={id}
+          key={slug}
+          tabId={slug}
           className={twMerge(
             stateVariants.common,
             stateVariants.inactive,
@@ -31,7 +32,7 @@ export default function PostCategoryTab({ tabData }: BoardCategoryTabProps) {
           )}
           ariaSelected={idx === 0}
         >
-          {label}
+          {name}
         </TabButton>
       ))}
     </TabList>
