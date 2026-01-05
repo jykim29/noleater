@@ -2,18 +2,17 @@ import PostCardItem from './PostCardItem';
 
 interface PostCardListProps {
   posts: {
-    id: number;
-    category: string;
-    author: {
-      name: string;
-    };
-    title: string;
-    images: {
-      src: string;
-    }[];
-    views: number;
-    comments: number;
-    createdAt: string;
+    boardId: string | null;
+    boardSlug: string | null;
+    categoryId: string | null;
+    categoryName: string | null;
+    createdAt: string | null;
+    id: string | null;
+    imagePath: string | null;
+    profileImage: string | null;
+    title: string | null;
+    userId: string | null;
+    username: string | null;
   }[];
 }
 

@@ -1,28 +1,42 @@
-import { Button, TextInput } from '@/components/common';
+import { notFound } from 'next/navigation';
+import Image from 'next/image';
+import { format } from 'date-fns';
 import { Content, Header } from '@/components/layout';
+import { Button, TextInput } from '@/components/common';
 import { CommentList, PostHeader } from '@/components/posts';
+import { getPost } from '@/api/board/getPosts';
+import { getPublicURL } from '@/api/storage/getPublicURL';
+import { createClient } from '@/libs/supabase/server';
 import mockCommentsData from '@/data/board/comments.json';
 
-export default function PostView() {
+export default async function PostView({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const supabase = await createClient();
+  const postData = await getPost(supabase, id);
+  if (!postData) notFound();
   return (
     <>
       <Header
         left={{
-          href: '/',
+          href: `/community/board/${postData.boardSlug}`,
           src: '/assets/icons/arrow_left.svg',
           alt: '뒤로가기',
         }}
       >
-        <h1 className="text-heading-xl">자유 게시판</h1>
+        <h1 className="text-heading-xl">{postData.boardName}</h1>
       </Header>
       <Content>
         <section>
           <h2 className="sr-only">제목</h2>
           <p className="text-heading-lg">
             <span className="text-body-md text-primary-100 mr-2">
-              [자유수다]
+              {postData.categoryName}
             </span>
-            안녕하세요. 반갑습니다!
+            {postData.title}
           </p>
         </section>
 
@@ -30,8 +44,8 @@ export default function PostView() {
           <h2 className="sr-only">작성자 정보</h2>
           <PostHeader
             profile={{
-              username: '푸른바다',
-              imgSrc: 'https://picsum.photos/80/80',
+              username: postData.username ?? '알 수 없음',
+              imgSrc: postData.profileImage || '',
               isFollowed: true,
             }}
             postMetadata={{ views: 91, comments: 2, like: 7 }}
@@ -41,32 +55,37 @@ export default function PostView() {
         <section className="text-body-sm text-gray-60 flex items-center justify-end gap-5">
           <h2 className="sr-only">작성일</h2>
           <time dateTime="2025-07-21T21:24:31">
-            작성일자 : 2025-07-21 21:24:31 (수정됨)
+            {format(postData.createdAt as string, 'yyyy-MM-dd hh:mm:ss')}
+            (수정됨)
           </time>
         </section>
 
-        <section>
+        <section className="flex flex-col gap-2">
           <h2 className="sr-only">본문</h2>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi
-            architecto, eos perferendis, quia a necessitatibus corporis possimus
-            neque laborum consectetur dolorem. Vel assumenda illum ducimus ea
-            sint beatae eius corrupti. Lorem ipsum dolor sit amet consectetur
-            adipisicing elit. Ad error omnis ut illo pariatur sed atque ullam,
-            tenetur laboriosam odit dolores recusandae reprehenderit animi
-            repellendus, officiis iure quod nihil illum. Lorem ipsum dolor sit
-            amet consectetur adipisicing elit. Assumenda vel incidunt quos,
-            earum explicabo pariatur nemo reprehenderit error asperiores
-            laboriosam aliquam fugit sint totam, exercitationem consectetur
-            quaerat provident repellendus voluptates? Quo fugit nemo
-            consequuntur ipsam quae rerum ut magni est temporibus, inventore
-            quis ullam mollitia quidem dignissimos itaque libero perspiciatis
-            culpa, sunt repudiandae aliquid maxime! Laborum quasi impedit earum
-            architecto. Perspiciatis provident pariatur nostrum accusamus
-            dignissimos qui totam placeat eligendi earum nam voluptates, minima
-            laudantium reprehenderit sint odit quidem explicabo cumque. Natus,
-            officia dolore corporis quisquam nostrum dolor culpa excepturi.
-          </p>
+          <p className="whitespace-pre-wrap">{postData.content}</p>
+
+          {postData.imagePath && (
+            <div className="relative flex w-full flex-col items-center justify-center gap-2">
+              {postData.imagePath.map((path, idx) => {
+                const imagePath = getPublicURL(path);
+                return (
+                  <a
+                    key={path}
+                    href={imagePath}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
+                    <Image
+                      src={imagePath}
+                      alt={`첨부 이미지 ${idx}`}
+                      width={250}
+                      height={250}
+                    />
+                  </a>
+                );
+              })}
+            </div>
+          )}
         </section>
 
         <section className="mt-5">
