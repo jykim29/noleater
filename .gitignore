@@ -42,3 +42,5 @@ next-env.d.ts
 
 # supabase database type
 database.types.ts
+
+certificates
