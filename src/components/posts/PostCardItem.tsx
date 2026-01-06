@@ -32,12 +32,12 @@ export default function PostCardItem({
   },
 }: PostCardItemProps) {
   return (
-    <Link href={`${boardSlug}/${id}`}>
+    <Link href={`/community/board/${boardSlug}/${id}`}>
       <div className="border-gray-40 flex h-32 w-full items-center gap-4 rounded-lg border px-4 py-4">
         <div className="text-body-sm flex h-full w-full flex-col justify-between">
           <span className="text-gray-60">
             <span className="text-primary-100 mr-3">{categoryName}</span>
-            {username} ▪ {formatRelativeTime(createdAt as string)}
+            {`${username} ◼ ${createdAt ? formatRelativeTime(createdAt) : '알 수 없음'}`}
           </span>
           <p className="text-body-md">{title}</p>
           <div className="flex items-center gap-2">

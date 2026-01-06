@@ -54,10 +54,14 @@ export default async function PostView({
 
         <section className="text-body-sm text-gray-60 flex items-center justify-end gap-5">
           <h2 className="sr-only">작성일</h2>
-          <time dateTime="2025-07-21T21:24:31">
-            {format(postData.createdAt as string, 'yyyy-MM-dd hh:mm:ss')}
-            (수정됨)
-          </time>
+          {postData.createdAt ? (
+            <time dateTime={postData.createdAt}>
+              {format(postData.createdAt, 'yyyy-MM-dd hh:mm:ss')}
+              (수정됨)
+            </time>
+          ) : (
+            <span>알 수 없음</span>
+          )}
         </section>
 
         <section className="flex flex-col gap-2">

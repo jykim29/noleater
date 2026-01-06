@@ -24,8 +24,10 @@ export const getPost = async (
   const { data, error } = await supabaseClient
     .from('v_post_detail_list')
     .select('*')
-    .eq('id', postId);
+    .eq('id', postId)
+    .limit(1)
+    .single();
   if (!data || error) return null;
 
-  return data[0];
+  return data;
 };

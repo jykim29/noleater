@@ -14,7 +14,7 @@ const stateVariants = {
 };
 
 export default function PostCategoryTab({ tabData }: BoardCategoryTabProps) {
-  const sortedTabData = tabData.sort((a, b) => a.order - b.order);
+  const sortedTabData = tabData.toSorted((a, b) => a.order - b.order);
   return (
     <TabList
       onSelect={() => {}}
