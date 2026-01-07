@@ -1,6 +1,5 @@
 import * as z from 'zod';
 import { getFileListSchema } from './fileSchema';
-import { BoardList } from './querySchema';
 
 const FILE_MAX_COUNT = {
   feeds: 3,
@@ -17,8 +16,9 @@ export const FeedFormDataSchema = z.object({
 });
 
 export const PostFormDataSchema = z.object({
-  type: BoardList,
-  category: z.string(),
+  boardId: z.string(),
+  boardName: z.string(),
+  categoryId: z.string(),
   title: z
     .string()
     .min(1, '제목을 입력해주세요.')

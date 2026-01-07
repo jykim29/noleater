@@ -25,13 +25,13 @@ importers:
         version: 8.6.0(react@19.1.4)
       next:
         specifier: 15.4.10
-        version: 15.4.10(@babel/core@7.28.3)(react-dom@19.1.0(react@19.1.4))(react@19.1.4)
+        version: 15.4.10(@babel/core@7.28.3)(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
       react:
         specifier: 19.1.4
         version: 19.1.4
       react-dom:
-        specifier: 19.1.0
-        version: 19.1.0(react@19.1.4)
+        specifier: 19.1.4
+        version: 19.1.4(react@19.1.4)
       tailwind-merge:
         specifier: ^3.3.1
         version: 3.3.1
@@ -2490,10 +2490,10 @@ packages:
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
 
-  react-dom@19.1.0:
-    resolution: {integrity: sha512-Xs1hdnE+DyKgeHJeJznQmYMIBG3TKIHJJT95Q58nHLSrElKlGQqDTR2HQ9fx5CN/Gk6Vh/kupBTDLU11/nDk/g==}
+  react-dom@19.1.4:
+    resolution: {integrity: sha512-s2868ab/xo2SI6H4106A7aFI8Mrqa4xC6HZT/pBzYyQ3cBLqa88hu47xYD8xf+uECleN698Awn7RCWlkTiKnqQ==}
     peerDependencies:
-      react: ^19.1.0
+      react: ^19.1.4
 
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
@@ -5361,14 +5361,14 @@ snapshots:
 
   natural-compare@1.4.0: {}
 
-  next@15.4.10(@babel/core@7.28.3)(react-dom@19.1.0(react@19.1.4))(react@19.1.4):
+  next@15.4.10(@babel/core@7.28.3)(react-dom@19.1.4(react@19.1.4))(react@19.1.4):
     dependencies:
       '@next/env': 15.4.10
       '@swc/helpers': 0.5.15
       caniuse-lite: 1.0.30001735
       postcss: 8.4.31
       react: 19.1.4
-      react-dom: 19.1.0(react@19.1.4)
+      react-dom: 19.1.4(react@19.1.4)
       styled-jsx: 5.1.6(@babel/core@7.28.3)(react@19.1.4)
     optionalDependencies:
       '@next/swc-darwin-arm64': 15.4.8
@@ -5517,7 +5517,7 @@ snapshots:
 
   queue-microtask@1.2.3: {}
 
-  react-dom@19.1.0(react@19.1.4):
+  react-dom@19.1.4(react@19.1.4):
     dependencies:
       react: 19.1.4
       scheduler: 0.26.0
