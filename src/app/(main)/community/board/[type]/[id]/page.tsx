@@ -56,7 +56,7 @@ export default async function PostView({
           <h2 className="sr-only">작성일</h2>
           {postData.createdAt ? (
             <time dateTime={postData.createdAt}>
-              {format(postData.createdAt, 'yyyy-MM-dd hh:mm:ss')}
+              {format(postData.createdAt, 'yyyy-MM-dd HH:mm:ss')}
               (수정됨)
             </time>
           ) : (
