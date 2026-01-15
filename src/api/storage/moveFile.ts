@@ -1,14 +1,15 @@
 import { SupabaseClient } from '@supabase/supabase-js';
 
-const deleteFiles = async (
+export const moveFile = async (
   supabaseClient: SupabaseClient,
-  paths: string[] | string
+  from: string,
+  to: string
 ) => {
-  const list = Array.isArray(paths) ? paths : [paths];
   const { data, error } = await supabaseClient.storage
     .from(process.env.NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET as string)
-    .remove(list);
+    .move(from, to);
+
+  if (error) return { data: null, error };
+
   return { data, error };
 };
-
-export default deleteFiles;

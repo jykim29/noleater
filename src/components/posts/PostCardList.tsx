@@ -19,9 +19,15 @@ interface PostCardListProps {
 export default function PostCardList({ posts }: PostCardListProps) {
   return (
     <div className="flex flex-col gap-2">
-      {posts.map((item) => {
-        return <PostCardItem key={item.id} postData={item} />;
-      })}
+      {posts.length > 0 ? (
+        posts.map((item) => {
+          return <PostCardItem key={item.id} postData={item} />;
+        })
+      ) : (
+        <p className="text-heading-lg m-5 text-center text-gray-600">
+          표시할 내용이 없습니다.
+        </p>
+      )}
     </div>
   );
 }

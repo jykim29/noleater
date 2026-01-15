@@ -1,13 +1,20 @@
 'use client';
 
-import { useActionState, useEffect } from 'react';
+import { useActionState, useEffect, useState } from 'react';
 import PostCategoryRadio from './PostCategoryRadio';
 import AttachedImagePreviewBox from './AttachedImagePreviewBox';
 import { Button, FileInput, Textarea, TextInput } from '../common';
-import { uploadPost } from '@/app/(main)/community/board/[type]/new/action';
-import useAttachFiles from '@/hooks/useAttachFiles';
-import { UploadPostActionState } from '@/types/actionState.interfaces';
 import { ErrorMessageBox } from '../auth';
+import { uploadPost } from '@/app/(main)/community/board/[type]/new/action';
+import { createClient } from '@/libs/supabase/client';
+import { UploadPostActionState } from '@/types/actionState.interfaces';
+import {
+  ALLOWED_FILE_MIME_TYPE,
+  MAX_FILE_COUNT,
+  MAX_FILE_SIZE,
+} from '@/constants/postConfig';
+import { getFileSchema } from '@/schemas';
+import { uploadFiles } from '@/api/storage/uploadFile';
 
 interface NewPostFormProps {
   boardMetadata: {
@@ -30,44 +37,75 @@ const initialActionState: UploadPostActionState = {
 };
 
 export default function NewPostForm({ boardMetadata }: NewPostFormProps) {
+  const [files, setFiles] = useState<
+    { id: string; previewURL: string; path: string; data: File }[]
+  >([]);
+  const [error, setError] = useState<string | null>(null);
+
+  const args = {
+    metadata: { id: boardMetadata.id, slug: boardMetadata.slug },
+    storagePaths: [...files].map((file) => file.path),
+  };
+  const uploadPostWithPaths = uploadPost.bind(null, args);
   const [state, formAction, isPending] = useActionState<
     UploadPostActionState,
     FormData
-  >(uploadPost, initialActionState);
-  const { fileInfoList, addFile, removeFile, resetFile, ref } = useAttachFiles({
-    maxFileCount: 1,
-    maxSize: 5_242_880,
-    mimetype: ['image/jpeg', 'image/png'],
-  });
+  >(uploadPostWithPaths, initialActionState);
 
-  const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.currentTarget.files) return;
-    const files = e.currentTarget.files;
-    const { success, message } = addFile(files);
-    if (!success) return alert(message);
-    return;
+  const handleChangeFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputEl = e.currentTarget;
+    const { files: newFiles } = inputEl;
+    if (!newFiles) return;
+    // file 개수 validation
+    if (newFiles.length + files.length > MAX_FILE_COUNT.BOARD) {
+      return setError(
+        `최대 ${MAX_FILE_COUNT.BOARD}개까지만 첨부할 수 있습니다.`
+      );
+    }
+
+    // 개별 file validation
+    for (const file of newFiles) {
+      const { success: fileValidationSuccess, error: fileValidationError } =
+        getFileSchema(MAX_FILE_SIZE.BOARD, ALLOWED_FILE_MIME_TYPE).safeParse(
+          file
+        );
+      if (!fileValidationSuccess)
+        return setError(fileValidationError.issues[0].message);
+    }
+
+    // 최종 업로드
+    const supabase = createClient();
+    const { data, error } = await uploadFiles(supabase, 'temp', [...newFiles]);
+    if (error) return;
+
+    setFiles((prev) =>
+      prev.concat(
+        data.map((item) => ({
+          id: crypto.randomUUID(),
+          path: item.path,
+          previewURL: URL.createObjectURL(item.file),
+          data: item.file,
+        }))
+      )
+    );
+    inputEl.value = '';
   };
-  const handleDeleteFile = (e: React.MouseEvent<HTMLButtonElement>) => {
+
+  const handleClickDeleteFile = (e: React.MouseEvent<HTMLButtonElement>) => {
     const fileId = e.currentTarget.dataset.imageId;
     if (!fileId) return;
-    removeFile(fileId);
+    const filteredFiles = [...files].filter((file) => file.id !== fileId);
+    setFiles(filteredFiles);
   };
 
   useEffect(() => {
-    if (!state.success && state.error) {
-      console.log(state);
-      resetFile();
-    }
+    if (!state.success && state.error) alert(state.error.message);
   }, [state]);
 
   return (
     <>
-      {!state.success && state.error && (
-        <ErrorMessageBox>{'❗ ' + state.error.message}</ErrorMessageBox>
-      )}
+      {error && <ErrorMessageBox>{'❗ ' + error}</ErrorMessageBox>}
       <form action={formAction} className="flex flex-col gap-3">
-        <input type="hidden" name="bid" value={boardMetadata.id} />
-        <input type="hidden" name="bname" value={boardMetadata.slug} />
         <fieldset className="flex items-center gap-1">
           <legend className="sr-only">카테고리 선택</legend>
           {boardMetadata.board_categories.map((cat, idx) => (
@@ -105,14 +143,14 @@ export default function NewPostForm({ boardMetadata }: NewPostFormProps) {
         <fieldset className="mobile-width">
           <legend className="text-body-sm text-gray-80 flex w-full items-center justify-between py-1">
             <span>사진 등록(선택)</span>
-            <span className="text-negative">※ 최대 1장(5MB)까지 첨부가능</span>
+            <span className="text-negative">{`※ 최대 ${MAX_FILE_COUNT.BOARD}장(${MAX_FILE_SIZE.BOARD / (1024 * 1024)}MB)까지 첨부가능`}</span>
           </legend>
           <div className="no-scrollbar flex items-center gap-3 overflow-x-scroll py-1 *:shrink-0">
-            {fileInfoList.map((file) => (
+            {files.map((file) => (
               <AttachedImagePreviewBox
                 key={file.id}
                 image={{ src: file.previewURL, id: file.id }}
-                onDelete={handleDeleteFile}
+                onDelete={handleClickDeleteFile}
               />
             ))}
             <FileInput
@@ -120,7 +158,6 @@ export default function NewPostForm({ boardMetadata }: NewPostFormProps) {
               name="image"
               onChange={handleChangeFile}
               accept="image/*"
-              ref={ref}
               multiple
             />
           </div>
