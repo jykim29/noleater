@@ -4,7 +4,6 @@ import deleteFiles from './deleteFiles';
 
 export const uploadFile = async (
   supabaseClient: SupabaseClient,
-  bucketName: string,
   boardType: string,
   file: File
 ) => {
@@ -13,7 +12,7 @@ export const uploadFile = async (
   const fileName = `${new Date().getTime()}-${crypto.randomUUID()}.${fileExtension}`;
   const storagePath = `${imageBasePath}/${fileName}`;
   const { data, error } = await supabaseClient.storage
-    .from(bucketName)
+    .from(process.env.NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET as string)
     .upload(storagePath, file);
 
   if (error) return { data: null, error };
@@ -23,42 +22,42 @@ export const uploadFile = async (
 
 export const uploadFiles = async (
   supabaseClient: SupabaseClient,
-  bucketName: string,
   boardType: string,
   files: File[],
   options?: { rollbackOnFailure?: boolean }
 ) => {
-  const imagePathList: string[] = [];
+  const dataList: {
+    id: string;
+    path: string;
+    fullPath: string;
+    file: File;
+  }[] = [];
 
   // 스토리지 파일 업로드
   for (const file of files) {
-    const { data, error } = await uploadFile(
-      supabaseClient,
-      bucketName,
-      boardType,
-      file
-    );
+    const { data, error } = await uploadFile(supabaseClient, boardType, file);
 
     // 스토리지 업로드 에러 핸들링
     if (error) {
-      console.log('스토리지 파일 업로드 에러', error);
       // 이미 업로드 된 파일 삭제
-      if (imagePathList.length > 0 && options?.rollbackOnFailure)
-        await deleteFiles(supabaseClient, bucketName, imagePathList);
+      if (dataList.length > 0 && options?.rollbackOnFailure)
+        await deleteFiles(
+          supabaseClient,
+          dataList.map((data) => data.path)
+        );
       return {
-        pathList: imagePathList,
+        data: null,
         error: {
           code: error.name,
           message: error.message,
         },
       };
     }
-    console.log('스토리지 업로드 성공 데이터', data);
-    imagePathList.push(data.path);
+    dataList.push({ ...data, file });
   }
 
   return {
-    pathList: imagePathList,
+    data: dataList,
     error: null,
   };
 };
