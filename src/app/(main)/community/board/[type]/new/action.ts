@@ -5,6 +5,7 @@ import { createClient } from '@/libs/supabase/server';
 import { PostFormDataSchema } from '@/schemas';
 import { UploadPostActionState } from '@/types';
 import { moveFile } from '@/api/storage/moveFile';
+import { deleteFiles } from '@/api/storage/deleteFiles';
 
 type UploadPost = (
   args: {
@@ -80,8 +81,12 @@ export const uploadPost: UploadPost = async (args, _prevState, formData) => {
   let finalizedPaths = [];
   for (const path of storagePaths) {
     const destinationPath = path.replace(/^[^/]+/, `${boardSlug}`);
-    const { data, error } = await moveFile(supabase, path, destinationPath);
-    if (error) {
+    const { error: moveFileResponseError } = await moveFile(
+      supabase,
+      path,
+      destinationPath
+    );
+    if (moveFileResponseError) {
       await supabase.from('posts').delete().eq('id', postResponse.id);
       return {
         success: false,
@@ -99,7 +104,21 @@ export const uploadPost: UploadPost = async (args, _prevState, formData) => {
     order: idx + 1,
     post_id: postResponse.id,
   }));
-  await supabase.from('post_images').insert(insertDataList);
+  const { error: postImageResponseError } = await supabase
+    .from('post_images')
+    .insert(insertDataList);
+  if (postImageResponseError) {
+    await deleteFiles(supabase, finalizedPaths);
+    await supabase.from('posts').delete().eq('id', postResponse.id);
+    return {
+      success: false,
+      error: {
+        code: 'ERROR_INSERT_POST_IMAGE',
+        message: 'fail to insert post image data',
+      },
+      formData: postFormData,
+    };
+  }
 
   // 모든 과정 성공 시, 상위 페이지로 리다이렉트
   redirect(`/community/board/${args.metadata.slug}`);

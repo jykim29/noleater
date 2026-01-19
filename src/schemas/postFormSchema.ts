@@ -1,9 +1,12 @@
 import * as z from 'zod';
 import { getFileListSchema } from './fileSchema';
-import { MAX_FILE_COUNT, POST_MAX_TEXT_LENGTH } from '@/constants/postConfig';
+import {
+  POST_MAX_FILE_COUNT,
+  POST_MAX_TEXT_LENGTH,
+} from '@/constants/postConfig';
 
 export const FeedFormDataSchema = z.object({
-  files: getFileListSchema(MAX_FILE_COUNT.FEED, 1),
+  files: getFileListSchema(POST_MAX_FILE_COUNT.FEED, 1),
   description: z
     .string()
     .min(1, '내용을 입력해주세요.')
@@ -15,8 +18,6 @@ export const FeedFormDataSchema = z.object({
 });
 
 export const PostFormDataSchema = z.object({
-  // boardId: z.string(),
-  // boardName: z.string(),
   categoryId: z.string(),
   title: z
     .string()
@@ -32,5 +33,4 @@ export const PostFormDataSchema = z.object({
       POST_MAX_TEXT_LENGTH.BOARD.CONTENT,
       `${POST_MAX_TEXT_LENGTH.BOARD.CONTENT}자 이내로 작성해주세요.`
     ),
-  // files: getFileListSchema(MAX_FILE_COUNT.BOARD),
 });

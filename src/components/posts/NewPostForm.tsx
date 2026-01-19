@@ -8,13 +8,14 @@ import { ErrorMessageBox } from '../auth';
 import { uploadPost } from '@/app/(main)/community/board/[type]/new/action';
 import { createClient } from '@/libs/supabase/client';
 import { UploadPostActionState } from '@/types/actionState.interfaces';
-import {
-  ALLOWED_FILE_MIME_TYPE,
-  MAX_FILE_COUNT,
-  MAX_FILE_SIZE,
-} from '@/constants/postConfig';
 import { getFileSchema } from '@/schemas';
 import { uploadFiles } from '@/api/storage/uploadFile';
+import { POST_MAX_FILE_COUNT } from '@/constants/postConfig';
+import {
+  STORAGE_ALLOWED_FILE_MIME_TYPE,
+  STORAGE_MAX_FILE_SIZE,
+  STORAGE_TEMP_DIR_NAME,
+} from '@/constants/storageConfig';
 
 interface NewPostFormProps {
   boardMetadata: {
@@ -56,27 +57,37 @@ export default function NewPostForm({ boardMetadata }: NewPostFormProps) {
     const inputEl = e.currentTarget;
     const { files: newFiles } = inputEl;
     if (!newFiles) return;
+
     // file 개수 validation
-    if (newFiles.length + files.length > MAX_FILE_COUNT.BOARD) {
+    if (newFiles.length + files.length > POST_MAX_FILE_COUNT.BOARD) {
+      inputEl.value = '';
       return setError(
-        `최대 ${MAX_FILE_COUNT.BOARD}개까지만 첨부할 수 있습니다.`
+        `최대 ${POST_MAX_FILE_COUNT.BOARD}개까지만 첨부할 수 있습니다.`
       );
     }
 
     // 개별 file validation
     for (const file of newFiles) {
       const { success: fileValidationSuccess, error: fileValidationError } =
-        getFileSchema(MAX_FILE_SIZE.BOARD, ALLOWED_FILE_MIME_TYPE).safeParse(
-          file
-        );
-      if (!fileValidationSuccess)
+        getFileSchema(
+          POST_MAX_FILE_COUNT.BOARD,
+          STORAGE_ALLOWED_FILE_MIME_TYPE
+        ).safeParse(file);
+      if (!fileValidationSuccess) {
+        inputEl.value = '';
         return setError(fileValidationError.issues[0].message);
+      }
     }
 
     // 최종 업로드
     const supabase = createClient();
-    const { data, error } = await uploadFiles(supabase, 'temp', [...newFiles]);
-    if (error) return;
+    const { data, error } = await uploadFiles(supabase, STORAGE_TEMP_DIR_NAME, [
+      ...newFiles,
+    ]);
+    if (error) {
+      inputEl.value = '';
+      return setError('파일 업로드에 실패했습니다. 잠시 후 다시 시도해주세요.');
+    }
 
     setFiles((prev) =>
       prev.concat(
@@ -88,12 +99,15 @@ export default function NewPostForm({ boardMetadata }: NewPostFormProps) {
         }))
       )
     );
+    setError(null);
     inputEl.value = '';
   };
 
   const handleClickDeleteFile = (e: React.MouseEvent<HTMLButtonElement>) => {
     const fileId = e.currentTarget.dataset.imageId;
     if (!fileId) return;
+    const selectedFile = [...files].find((file) => file.id === fileId);
+    if (selectedFile) URL.revokeObjectURL(selectedFile.previewURL);
     const filteredFiles = [...files].filter((file) => file.id !== fileId);
     setFiles(filteredFiles);
   };
@@ -143,7 +157,7 @@ export default function NewPostForm({ boardMetadata }: NewPostFormProps) {
         <fieldset className="mobile-width">
           <legend className="text-body-sm text-gray-80 flex w-full items-center justify-between py-1">
             <span>사진 등록(선택)</span>
-            <span className="text-negative">{`※ 최대 ${MAX_FILE_COUNT.BOARD}장(${MAX_FILE_SIZE.BOARD / (1024 * 1024)}MB)까지 첨부가능`}</span>
+            <span className="text-negative">{`※ 최대 ${POST_MAX_FILE_COUNT.BOARD}장(${STORAGE_MAX_FILE_SIZE.BOARD / (1024 * 1024)}MB)까지 첨부가능`}</span>
           </legend>
           <div className="no-scrollbar flex items-center gap-3 overflow-x-scroll py-1 *:shrink-0">
             {files.map((file) => (

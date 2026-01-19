@@ -1,6 +1,6 @@
 import { SupabaseClient } from '@supabase/supabase-js';
 
-const deleteFiles = async (
+export const deleteFiles = async (
   supabaseClient: SupabaseClient,
   paths: string[] | string
 ) => {
@@ -10,5 +10,3 @@ const deleteFiles = async (
     .remove(list);
   return { data, error };
 };
-
-export default deleteFiles;

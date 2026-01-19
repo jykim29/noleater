@@ -20,8 +20,13 @@ export default function PostCardList({ posts }: PostCardListProps) {
   return (
     <div className="flex flex-col gap-2">
       {posts.length > 0 ? (
-        posts.map((item) => {
-          return <PostCardItem key={item.id} postData={item} />;
+        posts.map((item, idx) => {
+          return (
+            <PostCardItem
+              key={item.id ?? `${item.boardSlug ?? 'post'}-${idx}`}
+              postData={item}
+            />
+          );
         })
       ) : (
         <p className="text-heading-lg m-5 text-center text-gray-600">
