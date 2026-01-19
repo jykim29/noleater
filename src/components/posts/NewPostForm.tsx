@@ -70,7 +70,7 @@ export default function NewPostForm({ boardMetadata }: NewPostFormProps) {
     for (const file of newFiles) {
       const { success: fileValidationSuccess, error: fileValidationError } =
         getFileSchema(
-          POST_MAX_FILE_COUNT.BOARD,
+          STORAGE_MAX_FILE_SIZE.BOARD,
           STORAGE_ALLOWED_FILE_MIME_TYPE
         ).safeParse(file);
       if (!fileValidationSuccess) {
