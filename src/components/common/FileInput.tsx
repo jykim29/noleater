@@ -17,7 +17,7 @@ export default function FileInput({
   return (
     <label
       className={twMerge(
-        'border-gray-40 bg-gray-20 block h-20 w-20 cursor-pointer rounded-2xl border-2 bg-[url(/assets/icons/plus.svg)] bg-center bg-no-repeat pointer-fine:hover:brightness-95',
+        'border-gray-40 bg-gray-20 block h-20 w-20 cursor-pointer rounded-2xl border-2 bg-[url(/assets/icons/plus.svg)] bg-center bg-no-repeat has-disabled:cursor-not-allowed has-not-disabled:pointer-fine:hover:brightness-95',
         newClassName
       )}
     >

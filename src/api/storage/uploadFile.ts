@@ -1,6 +1,6 @@
 import { SupabaseClient } from '@supabase/supabase-js';
 import { format } from 'date-fns';
-import deleteFiles from './deleteFiles';
+import { deleteFiles } from './deleteFiles';
 
 export const uploadFile = async (
   supabaseClient: SupabaseClient,
