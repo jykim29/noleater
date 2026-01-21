@@ -4,12 +4,14 @@ interface FileInputProps extends React.ComponentPropsWithRef<'input'> {
   id: string;
   name: string;
   className?: string;
+  ref?: React.Ref<HTMLInputElement>;
 }
 
 export default function FileInput({
   id,
   name,
   className: newClassName = '',
+  ref,
   ...rest
 }: FileInputProps) {
   return (
@@ -19,7 +21,14 @@ export default function FileInput({
         newClassName
       )}
     >
-      <input className="sr-only" type="file" name={name} id={id} {...rest} />
+      <input
+        className="sr-only"
+        type="file"
+        name={name}
+        id={id}
+        ref={ref}
+        {...rest}
+      />
     </label>
   );
 }
