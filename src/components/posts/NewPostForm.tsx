@@ -9,7 +9,7 @@ import { uploadPost } from '@/app/(main)/community/board/[type]/new/action';
 import { createClient } from '@/libs/supabase/client';
 import { UploadPostActionState } from '@/types/actionState.interfaces';
 import { getFileSchema } from '@/schemas';
-import { POST_MAX_FILE_COUNT } from '@/constants/postConfig';
+import { POST_FILE_COUNT } from '@/constants/postConfig';
 import {
   STORAGE_ALLOWED_FILE_MIME_TYPE,
   STORAGE_MAX_FILE_SIZE,
@@ -41,8 +41,8 @@ export default function NewPostForm({ boardMetadata }: NewPostFormProps) {
   const { paths, error, status, fileInputRef, deleteButtonRef } =
     useSupabaseStorage(supabase, 'temp', {
       validation: {
-        minCount: 0,
-        maxCount: 3,
+        minCount: POST_FILE_COUNT.BOARD.MIN,
+        maxCount: POST_FILE_COUNT.BOARD.MAX,
         schema: getFileSchema(
           STORAGE_MAX_FILE_SIZE.BOARD,
           STORAGE_ALLOWED_FILE_MIME_TYPE
@@ -55,7 +55,7 @@ export default function NewPostForm({ boardMetadata }: NewPostFormProps) {
       metadata: { id: boardMetadata.id, slug: boardMetadata.slug },
       storagePaths: [...paths].map((file) => file.path),
     }),
-    [paths]
+    [boardMetadata, paths]
   );
   const uploadPostWithPaths = uploadPost.bind(null, args);
   const [state, formAction, isPending] = useActionState<
@@ -108,7 +108,7 @@ export default function NewPostForm({ boardMetadata }: NewPostFormProps) {
         <fieldset className="mobile-width">
           <legend className="text-body-sm text-gray-80 flex w-full items-center justify-between py-1">
             <span>사진 등록(선택)</span>
-            <span className="text-negative">{`※ 최대 ${POST_MAX_FILE_COUNT.BOARD}장(${STORAGE_MAX_FILE_SIZE.BOARD / (1024 * 1024)}MB)까지 첨부가능`}</span>
+            <span className="text-negative">{`※ 최대 ${POST_FILE_COUNT.BOARD.MAX}장(${STORAGE_MAX_FILE_SIZE.BOARD / (1024 * 1024)}MB)까지 첨부가능`}</span>
           </legend>
           <div className="no-scrollbar flex items-center gap-3 overflow-x-scroll py-1 *:shrink-0">
             {paths.map((path) => (

@@ -13,6 +13,7 @@ import {
   STORAGE_ALLOWED_FILE_MIME_TYPE,
   STORAGE_MAX_FILE_SIZE,
 } from '@/constants/storageConfig';
+import { POST_FILE_COUNT } from '@/constants/postConfig';
 
 const initialActionState: UploadFeedActionState = {
   success: false,
@@ -25,8 +26,8 @@ export default function NewFeedForm() {
   const { paths, error, status, fileInputRef, deleteButtonRef } =
     useSupabaseStorage(supabase, 'temp', {
       validation: {
-        minCount: 1,
-        maxCount: 3,
+        minCount: POST_FILE_COUNT.FEED.MIN,
+        maxCount: POST_FILE_COUNT.FEED.MAX,
         schema: getFileSchema(
           STORAGE_MAX_FILE_SIZE.FEED,
           STORAGE_ALLOWED_FILE_MIME_TYPE
@@ -56,9 +57,7 @@ export default function NewFeedForm() {
         <fieldset className="mobile-width flex w-full flex-col">
           <legend className="text-body-sm flex w-full items-center justify-between py-1">
             <span>사진 등록(필수)</span>
-            <span className="text-negative">
-              ※ 최대 3장(각 5MB)까지 첨부가능
-            </span>
+            <span className="text-negative">{`※ 최대 ${POST_FILE_COUNT.FEED.MAX}장(${STORAGE_MAX_FILE_SIZE.FEED / (1024 * 1024)}MB)까지 첨부가능`}</span>
           </legend>
 
           <div className="no-scrollbar flex items-center gap-3 overflow-x-scroll py-1 *:shrink-0">
