@@ -1,4 +1,4 @@
-import { SetStateAction, useState } from 'react';
+import { SetStateAction, useCallback, useState } from 'react';
 import * as z from 'zod';
 import { uploadFiles } from '@/api/storage/uploadFile';
 import { SupabaseClient } from '@supabase/supabase-js';
@@ -37,64 +37,70 @@ export function useSupabaseStorage(
     setStatus('error');
   };
 
-  const fileInputRef = (node: HTMLInputElement | null) => {
-    if (!node || node.type !== 'file')
-      return setErrorWithStatus('인풋 요소 찾을 수 없음');
+  const fileInputRef = useCallback(
+    (node: HTMLInputElement | null) => {
+      if (!node || node.type !== 'file')
+        return setErrorWithStatus('인풋 요소 찾을 수 없음');
 
-    const handleChangeFile = async () => {
-      setStatus('uploading');
-      const { files: newFiles } = node;
-      if (!newFiles) return;
-      if (options.validation) {
-        const { minCount, maxCount, schema } = options.validation;
-        // 개수 체크
-        const totalCount = paths.length + newFiles.length;
-        if (minCount > totalCount || maxCount < totalCount) {
-          node.value = '';
-          return setErrorWithStatus('개수 오류');
+      const handleChangeFile = async () => {
+        setStatus('uploading');
+        const { files: newFiles } = node;
+        if (!newFiles) return;
+        if (options.validation) {
+          const { minCount, maxCount, schema } = options.validation;
+          // 개수 체크
+          const totalCount = paths.length + newFiles.length;
+          if (minCount > totalCount || maxCount < totalCount) {
+            node.value = '';
+            return setErrorWithStatus('개수 오류');
+          }
+          // validate files
+          const { error } = validateFiles([...newFiles], schema);
+          if (error) {
+            node.value = '';
+            return setErrorWithStatus(error);
+          }
         }
-        // validate files
-        const { error } = validateFiles([...newFiles], schema);
+        // 최종 업로드
+        const { data, error } = await uploadFiles(supabaseClient, storagePath, [
+          ...newFiles,
+        ]);
         if (error) {
           node.value = '';
-          return setErrorWithStatus(error);
+          return setErrorWithStatus(error.message);
         }
-      }
-      // 최종 업로드
-      const { data, error } = await uploadFiles(supabaseClient, storagePath, [
-        ...newFiles,
-      ]);
-      if (error) {
+        const newPaths: Path[] = data.map((item) => ({
+          id: crypto.randomUUID(),
+          path: item.path,
+        }));
+        setPaths((prev) => [...prev, ...newPaths]);
         node.value = '';
-        return setErrorWithStatus(error.message);
-      }
-      const newPaths: Path[] = data.map((item) => ({
-        id: crypto.randomUUID(),
-        path: item.path,
-      }));
-      setPaths((prev) => [...prev, ...newPaths]);
-      node.value = '';
-      setStatus('idle');
-    };
+        setStatus('idle');
+      };
 
-    node.addEventListener('change', handleChangeFile);
-    return () => node.removeEventListener('change', handleChangeFile);
-  };
+      node.addEventListener('change', handleChangeFile);
+      return () => node.removeEventListener('change', handleChangeFile);
+    },
+    [paths]
+  );
 
-  const deleteButtonRef = (node: HTMLButtonElement | null) => {
-    if (!node || node.type !== 'button')
-      return setErrorWithStatus('버튼 요소 찾을 수 없음');
+  const deleteButtonRef = useCallback(
+    (node: HTMLButtonElement | null) => {
+      if (!node || node.type !== 'button')
+        return setErrorWithStatus('버튼 요소 찾을 수 없음');
 
-    const handleClickDeleteFile = () => {
-      const imageId = node.dataset.imageId;
-      if (!imageId) return setErrorWithStatus('id값 읽기 오류');
-      const filteredPaths = [...paths].filter((path) => path.id !== imageId);
-      setPaths(filteredPaths);
-    };
+      const handleClickDeleteFile = () => {
+        const imageId = node.dataset.imageId;
+        if (!imageId) return setErrorWithStatus('id값 읽기 오류');
+        const filteredPaths = [...paths].filter((path) => path.id !== imageId);
+        setPaths(filteredPaths);
+      };
 
-    node.addEventListener('click', handleClickDeleteFile);
-    return () => node.removeEventListener('click', handleClickDeleteFile);
-  };
+      node.addEventListener('click', handleClickDeleteFile);
+      return () => node.removeEventListener('click', handleClickDeleteFile);
+    },
+    [paths]
+  );
 
   return { fileInputRef, deleteButtonRef, paths, error, status };
 }
