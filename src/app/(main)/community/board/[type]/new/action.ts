@@ -78,7 +78,7 @@ export const uploadPost: UploadPost = async (args, _prevState, formData) => {
   if (!hasFiles) redirect(`/community/board/${args.metadata.slug}`);
 
   // 3. temp에서 파일 이동
-  let finalizedPaths = [];
+  const finalizedPaths = [];
   for (const path of storagePaths) {
     const destinationPath = path.replace(/^[^/]+/, `${boardSlug}`);
     const { error: moveFileResponseError } = await moveFile(

@@ -75,7 +75,7 @@ export const uploadFeed: UploadFeed = async (args, _prevState, formData) => {
   }
 
   // 3. temp에서 파일 이동
-  let finalizedPaths = [];
+  const finalizedPaths = [];
   for (const path of storagePaths) {
     const destinationPath = path.replace(/^[^/]+/, 'feeds');
     const { error: moveFileResponseError } = await moveFile(
