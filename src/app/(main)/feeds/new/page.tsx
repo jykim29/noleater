@@ -1,5 +1,3 @@
-'use client';
-
 import { Content, Header } from '@/components/layout';
 import { NewFeedForm } from '@/components/feeds';
 
