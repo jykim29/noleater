@@ -129,7 +129,11 @@ export default function NewPostForm({ boardMetadata }: NewPostFormProps) {
           </div>
         </fieldset>
         <div className="mt-10">
-          <Button className="w-full" type="submit" disabled={isPending}>
+          <Button
+            className="w-full"
+            type="submit"
+            disabled={isPending || status === 'uploading'}
+          >
             글쓰기
           </Button>
         </div>

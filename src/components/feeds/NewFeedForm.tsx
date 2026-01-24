@@ -105,7 +105,11 @@ export default function NewFeedForm() {
           />
         </fieldset>
 
-        <Button className="w-full" type="submit" disabled={isPending}>
+        <Button
+          className="w-full"
+          type="submit"
+          disabled={isPending || status === 'uploading'}
+        >
           게시
         </Button>
       </form>
