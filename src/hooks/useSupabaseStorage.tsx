@@ -39,7 +39,8 @@ export function useSupabaseStorage(
 
   const fileInputRef = useCallback(
     (node: HTMLInputElement | null) => {
-      if (!node || node.type !== 'file')
+      if (!node) return;
+      if (node.type !== 'file')
         return setErrorWithStatus('인풋 요소 찾을 수 없음');
 
       const handleChangeFile = async () => {
@@ -81,12 +82,13 @@ export function useSupabaseStorage(
       node.addEventListener('change', handleChangeFile);
       return () => node.removeEventListener('change', handleChangeFile);
     },
-    [paths]
+    [options.validation, paths.length, storagePath, supabaseClient]
   );
 
   const deleteButtonRef = useCallback(
     (node: HTMLButtonElement | null) => {
-      if (!node || node.type !== 'button')
+      if (!node) return;
+      if (node.type !== 'button')
         return setErrorWithStatus('버튼 요소 찾을 수 없음');
 
       const handleClickDeleteFile = () => {
