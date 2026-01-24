@@ -106,7 +106,7 @@ export const uploadFeed: UploadFeed = async (args, _prevState, formData) => {
     .insert(insertDataList);
   if (feedImageResponseError) {
     await deleteFiles(supabase, finalizedPaths);
-    await supabase.from('posts').delete().eq('id', feedResponse.id);
+    await supabase.from('feeds').delete().eq('id', feedResponse.id);
     return {
       success: false,
       error: {
