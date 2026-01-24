@@ -1,12 +1,7 @@
 import * as z from 'zod';
-import { getFileListSchema } from './fileSchema';
-import {
-  POST_MAX_FILE_COUNT,
-  POST_MAX_TEXT_LENGTH,
-} from '@/constants/postConfig';
+import { POST_MAX_TEXT_LENGTH } from '@/constants/postConfig';
 
 export const FeedFormDataSchema = z.object({
-  files: getFileListSchema(POST_MAX_FILE_COUNT.FEED, 1),
   description: z
     .string()
     .min(1, '내용을 입력해주세요.')

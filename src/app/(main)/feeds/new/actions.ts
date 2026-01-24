@@ -3,29 +3,43 @@
 import { redirect } from 'next/navigation';
 import { createClient } from '@/libs/supabase/server';
 import { UploadFeedActionState } from '@/types/actionState.interfaces';
-import { uploadFile, uploadFiles } from '@/api/storage/uploadFile';
-import { FeedFormDataSchema, getFileSchema } from '@/schemas';
-import { Database } from '../../../../../database.types';
-import deleteFiles from '@/api/storage/deleteFiles';
+import { FeedFormDataSchema } from '@/schemas';
+import { moveFile } from '@/api/storage/moveFile';
+import { deleteFiles } from '@/api/storage/deleteFiles';
 
 type UploadFeed = (
+  args: {
+    storagePaths: string[];
+  },
   prevState: UploadFeedActionState,
   formData: FormData
 ) => Promise<UploadFeedActionState>;
 
-export const uploadFeed: UploadFeed = async (_prevState, formData) => {
+export const uploadFeed: UploadFeed = async (args, _prevState, formData) => {
+  const { storagePaths } = args;
   const feedFormData = {
-    files: (Array.from(formData.getAll('image')) as File[]).filter(
-      (file) => file.size !== 0
-    ),
-    description: formData.get('description') as string,
-    tags: formData.get('tags') as string,
+    description: String(formData.get('description')),
+    tags: String(formData.get('tags')),
   };
+  // 첨부파일이 없을 경우
+  if (storagePaths.length === 0) {
+    return {
+      success: false,
+      error: {
+        code: 'NO_FILES',
+        message: '첨부된 파일이 없습니다.',
+      },
+      formData: feedFormData,
+    };
+  }
   const supabase = await createClient();
 
   // 1. zod 검증 - 폼데이터
-  const { success, error: formDataValidationError } =
-    FeedFormDataSchema.safeParse(feedFormData);
+  const {
+    success,
+    error: formDataValidationError,
+    data: validatedFormData,
+  } = FeedFormDataSchema.safeParse(feedFormData);
   if (!success) {
     return {
       success: false,
@@ -36,66 +50,68 @@ export const uploadFeed: UploadFeed = async (_prevState, formData) => {
       formData: feedFormData,
     };
   }
-  // 2. zod 검증 - 개별 파일
-  for (const file of feedFormData.files) {
-    const FileSchema = getFileSchema(5 * 1024 * 1024, [
-      'image/jpeg',
-      'image/png',
-    ]);
-    const { success, error } = FileSchema.safeParse(file);
-    if (!success) {
-      return {
-        success: false,
-        error: { code: error.issues[0].code, message: error.issues[0].message },
-        formData: feedFormData,
-      };
-    }
-  }
+  const { description, tags } = validatedFormData;
 
-  // 3. 스토리지 다중 파일 업로드
-  const { pathList, error: storageResponseError } = await uploadFiles(
-    supabase,
-    'user_images',
-    'feeds',
-    feedFormData.files
-  );
-  if (storageResponseError)
+  // 2. feeds 테이블에 데이터 삽입
+  const { data: feedResponse, error: feedResponseError } = await supabase
+    .from('feeds')
+    .insert({
+      description,
+      image_count: storagePaths.length,
+      tags: tags ? tags.split(',').map((tag) => tag.trim()) : null,
+    })
+    .select()
+    .limit(1)
+    .single();
+  if (feedResponseError) {
     return {
       success: false,
       error: {
-        code: storageResponseError.code,
-        message: storageResponseError.message,
+        code: feedResponseError.code,
+        message: feedResponseError.message,
       },
       formData: feedFormData,
     };
+  }
 
-  // 4. 피드, 피드이미지 데이터 삽입 트랜잭션 수행
-  const transactionData: Database['public']['Functions']['insert_feed_and_images']['Args'] =
-    {
-      _content: feedFormData.description,
-      _image_urls: pathList,
-      _tags: feedFormData.tags
-        ? feedFormData.tags
-            .toString()
-            .split(',')
-            .map((tag) => tag.trim())
-            .filter((tag) => tag.length > 0)
-            .map((tag) => '#' + tag)
-        : [],
-      _image_count: pathList.length,
-    };
-  const { error: transactionError } = await supabase.rpc(
-    'insert_feed_and_images',
-    transactionData
-  );
-  // 트랜잭션 에러 시, 스토리지 파일 삭제
-  if (transactionError) {
-    await deleteFiles(supabase, 'user_images', pathList);
+  // 3. temp에서 파일 이동
+  const finalizedPaths = [];
+  for (const path of storagePaths) {
+    const destinationPath = path.replace(/^[^/]+/, 'feeds');
+    const { error: moveFileResponseError } = await moveFile(
+      supabase,
+      path,
+      destinationPath
+    );
+    if (moveFileResponseError) {
+      await supabase.from('feeds').delete().eq('id', feedResponse.id);
+      return {
+        success: false,
+        error: { code: 'ERROR_MOVE_FILES', message: 'fail to move files' },
+        formData: feedFormData,
+      };
+    } else {
+      finalizedPaths.push(destinationPath);
+    }
+  }
+
+  // 4. feed_images 테이블에 데이터 삽입
+  const insertDataList = finalizedPaths.map((path, idx) => ({
+    path,
+    order: idx + 1,
+    feed_id: feedResponse.id,
+  }));
+  const { error: feedImageResponseError } = await supabase
+    .from('feed_images')
+    .insert(insertDataList);
+  if (feedImageResponseError) {
+    await deleteFiles(supabase, finalizedPaths);
+    await supabase.from('feeds').delete().eq('id', feedResponse.id);
     return {
       success: false,
       error: {
-        code: 'unexpected_error',
-        message: '예상치못한 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+        code: 'ERROR_INSERT_POST_IMAGE',
+        message: 'fail to insert post image data',
       },
       formData: feedFormData,
     };

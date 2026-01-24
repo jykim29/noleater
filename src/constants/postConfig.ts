@@ -1,6 +1,6 @@
-export const POST_MAX_FILE_COUNT = {
-  FEED: 3,
-  BOARD: 3,
+export const POST_FILE_COUNT = {
+  FEED: { MIN: 1, MAX: 3 },
+  BOARD: { MIN: 0, MAX: 3 },
 };
 
 export const POST_MAX_TEXT_LENGTH = {
