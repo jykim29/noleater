@@ -101,6 +101,7 @@ export default function NewFeedForm() {
             name="tags"
             label="태그"
             placeholder="쉼표(,)로 구분  ex) 태그, 태그, 태그"
+            defaultValue={state.formData?.tags ?? ''}
           />
         </fieldset>
 
