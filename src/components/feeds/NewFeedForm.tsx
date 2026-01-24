@@ -37,7 +37,7 @@ export default function NewFeedForm() {
 
   const args = useMemo(
     () => ({
-      storagePaths: [...paths].map((file) => file.path),
+      storagePaths: paths.map((file) => file.path),
     }),
     [paths]
   );
@@ -49,7 +49,7 @@ export default function NewFeedForm() {
 
   useEffect(() => {
     if (!state.success && state.error) alert(state.error.message);
-  }, [state]);
+  }, [state.success, state.error]);
   return (
     <>
       {error && <ErrorMessageBox>{'❗ ' + error}</ErrorMessageBox>}
@@ -57,7 +57,7 @@ export default function NewFeedForm() {
         <fieldset className="mobile-width flex w-full flex-col">
           <legend className="text-body-sm flex w-full items-center justify-between py-1">
             <span>사진 등록(필수)</span>
-            <span className="text-negative">{`※ 최대 ${POST_FILE_COUNT.FEED.MAX}장(${STORAGE_MAX_FILE_SIZE.FEED / (1024 * 1024)}MB)까지 첨부가능`}</span>
+            <span className="text-negative">{`※ 최대 ${POST_FILE_COUNT.FEED.MAX}장(각 ${STORAGE_MAX_FILE_SIZE.FEED / (1024 * 1024)}MB)까지 첨부가능`}</span>
           </legend>
 
           <div className="no-scrollbar flex items-center gap-3 overflow-x-scroll py-1 *:shrink-0">

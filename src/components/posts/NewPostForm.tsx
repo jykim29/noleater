@@ -53,7 +53,7 @@ export default function NewPostForm({ boardMetadata }: NewPostFormProps) {
   const args = useMemo(
     () => ({
       metadata: { id: boardMetadata.id, slug: boardMetadata.slug },
-      storagePaths: [...paths].map((file) => file.path),
+      storagePaths: paths.map((file) => file.path),
     }),
     [boardMetadata, paths]
   );
@@ -65,7 +65,7 @@ export default function NewPostForm({ boardMetadata }: NewPostFormProps) {
 
   useEffect(() => {
     if (!state.success && state.error) alert(state.error.message);
-  }, [state]);
+  }, [state.error, state.success]);
 
   return (
     <>
@@ -108,7 +108,7 @@ export default function NewPostForm({ boardMetadata }: NewPostFormProps) {
         <fieldset className="mobile-width">
           <legend className="text-body-sm text-gray-80 flex w-full items-center justify-between py-1">
             <span>사진 등록(선택)</span>
-            <span className="text-negative">{`※ 최대 ${POST_FILE_COUNT.BOARD.MAX}장(${STORAGE_MAX_FILE_SIZE.BOARD / (1024 * 1024)}MB)까지 첨부가능`}</span>
+            <span className="text-negative">{`※ 최대 ${POST_FILE_COUNT.BOARD.MAX}장(각 ${STORAGE_MAX_FILE_SIZE.BOARD / (1024 * 1024)}MB)까지 첨부가능`}</span>
           </legend>
           <div className="no-scrollbar flex items-center gap-3 overflow-x-scroll py-1 *:shrink-0">
             {paths.map((path) => (
