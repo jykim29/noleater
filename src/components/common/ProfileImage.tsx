@@ -3,14 +3,14 @@ import { twMerge } from 'tailwind-merge';
 
 interface ProfileImageProps {
   className?: string;
-  username?: string;
-  src?: string;
+  username: string;
+  src: string;
 }
 
 export default function ProfileImage({
   className: newClassName = '',
   src,
-  username = '',
+  username,
 }: ProfileImageProps) {
   return (
     <div
@@ -23,7 +23,7 @@ export default function ProfileImage({
         className="object-cover"
         fill
         sizes="100vw"
-        src={src ?? '/assets/images/default_profile.jpg'}
+        src={src}
         alt={username}
       />
     </div>
