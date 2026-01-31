@@ -2,29 +2,32 @@
 
 import Image from 'next/image';
 import { Carousel } from '../common';
+import { ViewRow } from '@/types/supabase/db.types';
+import { getPublicURL } from '@/api/storage/getPublicURL';
 
-export default function FeedCarousel() {
+export default function FeedCarousel({
+  paths,
+}: {
+  paths: ViewRow<'v_feed_detail_list'>['imagePaths'];
+}) {
   return (
     <Carousel>
       <Carousel.Container className="gap-2">
-        <Carousel.Slide className="relative aspect-[1/0.4] w-full rounded-lg">
-          <Image
-            className="object-cover"
-            src="https://picsum.photos/300/200?random=1"
-            alt="테스트 이미지"
-            fill
-            sizes="100vw"
-          />
-        </Carousel.Slide>
-        <Carousel.Slide className="relative aspect-[1/0.6] w-full rounded-sm">
-          <Image
-            className="object-cover"
-            src="https://picsum.photos/300/200?random=1"
-            alt="테스트 이미지"
-            fill
-            sizes="100vw"
-          />
-        </Carousel.Slide>
+        {paths &&
+          paths.map((path, idx) => (
+            <Carousel.Slide
+              key={path}
+              className="relative aspect-[1/0.4] w-full rounded-lg"
+            >
+              <Image
+                className="object-cover"
+                src={getPublicURL(path)}
+                alt={`${idx}번째 이미지`}
+                fill
+                sizes="100vw"
+              />
+            </Carousel.Slide>
+          ))}
       </Carousel.Container>
       <Carousel.PageIndicator
         type="numeric"
