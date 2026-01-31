@@ -1,50 +1,35 @@
-'use client';
-
+import Link from 'next/link';
 import Image from 'next/image';
-import FeedItem from './FeedItem';
-import { Button, GridItem } from '../common';
-import { useModalContext } from '@/contexts';
-
-interface FeedGridItemProps {
-  id: number;
-  imgSrc: string;
-  isMultiple?: boolean;
-}
+import { GridItem } from '../common';
+import { ViewRow } from '@/types/supabase/db.types';
+import { getPublicURL } from '@/api/storage/getPublicURL';
 
 export default function FeedGridItem({
-  id,
-  imgSrc,
-  isMultiple = false,
-}: FeedGridItemProps) {
-  const { open } = useModalContext();
-  const handleClick = (id: number) => {
-    open.centerModal(<FeedItem />);
-  };
+  data,
+}: {
+  data: ViewRow<'v_feed_grid_list'>;
+}) {
+  const isMultiple = data.imageCount ? data.imageCount > 1 : false;
   return (
-    <GridItem>
-      <Button
-        type="button"
-        className="relative block h-full w-full border-none bg-transparent p-0"
-        aria-label="피드 상세보기"
-        onClick={() => handleClick(id)}
-      >
+    <GridItem className="hover:brightness-90">
+      <Link className="relative block h-full w-full" href={`/feeds/${data.id}`}>
         <Image
           className="object-cover"
-          src={imgSrc}
+          src={getPublicURL(data.imagePath ?? '')}
           alt="피드 이미지 썸네일"
           fill
-          sizes="100vw"
+          sizes="(max-width: 768px) 50vw, 25vw"
         />
         {isMultiple && (
           <Image
-            className="absolute top-2 right-2"
+            className="absolute right-2 bottom-2"
             src="/assets/icons/multiple_image.svg"
             alt="이미지 더있음"
             width={21}
             height={20}
           />
         )}
-      </Button>
+      </Link>
     </GridItem>
   );
 }

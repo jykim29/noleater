@@ -1,14 +1,15 @@
 import FeedGridItem from './FeedGridItem';
+import { ViewRow } from '@/types/supabase/db.types';
 
-export default function FeedGrid() {
+export default function FeedGrid({
+  feeds,
+}: {
+  feeds: ViewRow<'v_feed_grid_list'>[];
+}) {
   return (
     <div className="grid grid-cols-3 gap-1">
-      {[...Array(128)].map((_, idx) => (
-        <FeedGridItem
-          key={idx}
-          id={idx}
-          imgSrc={`https://picsum.photos/300/200?random=${idx}`}
-        />
+      {feeds.map((feed) => (
+        <FeedGridItem key={feed.id} data={feed} />
       ))}
     </div>
   );

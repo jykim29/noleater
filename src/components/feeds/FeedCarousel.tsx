@@ -10,7 +10,6 @@ export default function FeedCarousel({
 }: {
   paths: ViewRow<'v_feed_detail_list'>['imagePaths'];
 }) {
-  console.log(paths);
   return (
     <Carousel>
       <Carousel.Container className="gap-2">
