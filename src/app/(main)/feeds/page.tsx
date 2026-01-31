@@ -1,21 +1,33 @@
 import Link from 'next/link';
 import { Content, Header } from '@/components/layout';
 import { FeedGrid, FeedList } from '@/components/feeds';
-import { getFeedsDetail } from '@/api/feeds/getFeeds';
+import { getFeedsDetailList, getFeedsGridList } from '@/api/feeds/getFeeds';
 import { createClient } from '@/libs/supabase/server';
+import { ViewRow } from '@/types/supabase/db.types';
+import { redirect } from 'next/navigation';
 
-type SearchParamsProps = {
-  viewType: 'grid' | 'list';
+type FeedsData = {
+  grid: ViewRow<'v_feed_grid_list'>[];
+  list: ViewRow<'v_feed_detail_list'>[];
+};
+
+const ALLOWED_SEARCH_PARAMS_AND_VALUES = {
+  viewType: ['list', 'grid'],
 };
 
 export default async function FeedsPage({
   searchParams,
 }: {
-  searchParams: Promise<SearchParamsProps>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-  const { viewType } = await searchParams;
+  const { viewType = 'list' } = await searchParams;
+  if (!ALLOWED_SEARCH_PARAMS_AND_VALUES.viewType.includes(viewType as string))
+    redirect('/feeds?viewType=list');
   const supabase = await createClient();
-  const feedListData = (await getFeedsDetail(supabase)) ?? [];
+  const feedsData =
+    viewType === 'grid'
+      ? await getFeedsGridList(supabase)
+      : await getFeedsDetailList(supabase);
   return (
     <>
       <Header
@@ -39,7 +51,11 @@ export default async function FeedsPage({
         <h1 className="text-heading-xl">피드</h1>
       </Header>
       <Content>
-        {viewType === 'grid' ? <FeedGrid /> : <FeedList feeds={feedListData} />}
+        {viewType === 'grid' ? (
+          <FeedGrid feeds={feedsData as FeedsData['grid']} />
+        ) : (
+          <FeedList feeds={feedsData as FeedsData['list']} />
+        )}
         <div className="relative flex justify-end">
           <Link
             className="bg-primary-gradient text-button-md fixed bottom-25 self-start rounded-full px-2 py-1.5 text-white"
